@@ -20,4 +20,24 @@ public class Caja {
 	public float cuadrarCaja(){
 		return ingresos;
 	}
+	//Get y sets:
+	public float getIngresos() {
+		return ingresos;
+	}
+	public void setIngresos(float ingresos) {
+		this.ingresos = ingresos;
+	}
+	public float getGastos() {
+		return gastos;
+	}
+	public void setGastos(float gastos) {
+		this.gastos = gastos;
+	}
+	public ArrayList<Pedido> getPedidos(){
+		return pedidos;
+	}
+	public void setPedidos(ArrayList<Pedido> pedidos) {
+		this.pedidos = pedidos;
+	}
+	//Finalizacion set y get
 }
