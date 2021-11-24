@@ -50,10 +50,10 @@ public class Restaurante {
 	}
 	
 	public void abrir() {
-		
+		//mostrar mensaje de bienvenida en la interfaz.
 	}
 	
 	public void cerrar() {
-		
+		//mostrar mensaje de despedida y salir de la aplicación.
 	}
 }
