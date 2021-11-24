@@ -1,14 +1,18 @@
+//Clase platillo para tener información especifica de los platillos presentes en el menu y poder agregarlos a las ordenes,
+//parte importante de la funcionalidad de facturación.
+//Autores: Michael Moreno Valoyes
 package gestorAplicacion.utileria;
 
 public class Platillo {
 	
-	private int tiempo;
+	private int tiempo; //Tiempo estimado que tarda el platillo en estar listo.
 	private String nombre;
-	//private String imagen = "PlaceHolder";
-	private String tipo;
+	private String tipo; //Especifica si el platillo es desayuno, almuerzo o cena
 	private String restricciones = "?";
 	private String ingredientes;
+	private int precio;
 	
+	//métodos get y set de los atributos
 	public int getTiempo() {
 		return tiempo;
 	}
@@ -47,5 +51,13 @@ public class Platillo {
 	
 	public void setIngredientes(String ingredientes) {
 		this.ingredientes = ingredientes;
+	}
+
+	public int getPrecio() {
+		return precio;
+	}
+
+	public void setPrecio(int precio) {
+		this.precio = precio;
 	}
 }

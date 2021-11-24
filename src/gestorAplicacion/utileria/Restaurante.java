@@ -1,5 +1,5 @@
-//Clase restaurante, guarda información del restaurante, contiene información del mismo nombre.
-//Autor: Michael Moreno Valoyes
+//Clase restaurante, guarda información del restaurante, contiene información del mismo, importante en la funcionalidad del estado del restaurante.
+//Autores: Michael Moreno Valoyes
 package gestorAplicacion.utileria;
 import java.util.ArrayList;
 
@@ -12,7 +12,7 @@ public class Restaurante {
 	private static ArrayList<Mesa> mesasReservadas = new ArrayList<Mesa>();
 	private static ArrayList<Mesa> mesasDisponibles = new ArrayList<Mesa>();
 	
-	//Métodos get y set para poder modificar los atributos
+	//Métodos get y set para poder modificar los atributos necesarios
 	public ArrayList<Platillo> getMenu() {
 		return menu;
 	}
