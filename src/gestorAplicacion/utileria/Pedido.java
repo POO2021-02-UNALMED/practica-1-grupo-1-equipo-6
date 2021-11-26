@@ -9,6 +9,13 @@ public class Pedido {
 	private float precio;
 	private Caja caja;
 	
+	public Pedido(Cliente cliente,Mesero mesero, boolean estado, float precio, Caja caja) {
+		this.cliente = cliente;
+		this.mesero = mesero;
+		this.estado = estado;
+		this.precio = precio;
+		this.caja = caja;
+	}
 	
 	
 	
