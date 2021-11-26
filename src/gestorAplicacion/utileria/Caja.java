@@ -5,6 +5,11 @@ public class Caja {
 	private float gastos;
 	private ArrayList<Pedido> pedidos = new ArrayList<Pedido>();
 	
+	public Caja(float ingresos, float gastos) {
+		this.ingresos = ingresos;
+		this.gastos = gastos;
+	}
+	
 	public void agregarPedidos(Pedido pedidox) {
 		pedidos.add(pedidox);
 	}
