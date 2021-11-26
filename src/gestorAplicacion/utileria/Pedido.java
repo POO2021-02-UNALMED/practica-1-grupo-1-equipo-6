@@ -1,13 +1,24 @@
 package gestorAplicacion.utileria;
 import java.util.*;
+import gestorAplicacion.persona.*;
 public class Pedido {
-	//private Cliente cliente;
-	//private ArrayList<Platillo> platillos = new ArrayList<Platillo>();
-	//private Mesero mesero;
+	private Cliente cliente;
+	private ArrayList<Platillo> platillos = new ArrayList<Platillo>();
+	private Mesero mesero;
 	private boolean estado;
 	private float precio;
 	private Caja caja;
+	
+	
+	
+	
 	//Gets y sets
+	public ArrayList<Platillo> getPlatillos(){
+		return platillos;
+	}
+	public void setPlatillos() {
+		platillos = cliente.getPlatillos();
+	}
 	public float getPrecio() {
 		return precio;
 	}
@@ -30,6 +41,11 @@ public class Pedido {
 	public void borrarPedido() {
 		estado = false;
 		caja.agregarPedidos(this);
+	}
+	
+	
+	public Mesero getMesero() {
+		return mesero;
 	}
 	
 }
