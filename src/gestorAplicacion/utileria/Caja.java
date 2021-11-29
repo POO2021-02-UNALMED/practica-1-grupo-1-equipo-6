@@ -12,6 +12,7 @@ public class Caja {
 	public String crearEstadisticas() {
 		String mensaje = "Las estadísticas de nuestro restaurante son:";
 		int posicion = 0;
+		Hashtable <Integer,String> menuOrdenado = new Hashtable<Integer,String>();
 		ArrayList<Integer> cantidadPlatillosMenu = new ArrayList<Integer>();
 		for(int i = 0; i<Restaurante.getMenu().size();i++) {
 			cantidadPlatillosMenu.add(0);
@@ -25,9 +26,20 @@ public class Caja {
 			}
 		}
 		for(int i = 0; i<Restaurante.getMenu().size();i++) {
-			mensaje = mensaje + "\n" + Restaurante.getMenu().get(i).getNombre() + ": " + cantidadPlatillosMenu.get(i);
+			menuOrdenado.put(cantidadPlatillosMenu.get(i),Restaurante.getMenu().get(i).getNombre());
 		}
 		
+		Enumeration<Integer> e = menuOrdenado.keys();
+		while(e.hasMoreElements()) {
+			int key = e.nextElement();
+			mensaje = mensaje + "\n" + "Cantidad: " + key + "\t Platillo: " + menuOrdenado.get(key);
+		}
+		//Versión desordenada
+		/*
+		for(int i = 0; i<Restaurante.getMenu().size();i++) {
+			mensaje = mensaje + "\n" + Restaurante.getMenu().get(i).getNombre() + ": " + cantidadPlatillosMenu.get(i);
+		}
+		*/
 		
 		return mensaje;
 	}
