@@ -13,6 +13,7 @@ public class Cliente extends Persona {
 	public void pedirOrden(ArrayList<Platillo> platillosPedir) {
 		platillos.addAll(platillosPedir);
 		
+		
 	}
 	public void reservar(Mesa mesa) {
 		if(mesa.isDisponibilidad() == true) {

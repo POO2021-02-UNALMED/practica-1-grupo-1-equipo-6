@@ -1,24 +1,25 @@
-//Clase restaurante, guarda información del restaurante, contiene información del mismo, importante en la funcionalidad del estado del restaurante.
+//Clase restaurante, guarda informaciï¿½n del restaurante, contiene informaciï¿½n del mismo, importante en la funcionalidad del estado del restaurante.
 //Autores: Michael Moreno Valoyes
 package gestorAplicacion.utileria;
 import java.util.ArrayList;
 
-//Clase Restarurante en la que se guarda información pertinente del restaurante
+//Clase Restarurante en la que se guarda informaciï¿½n pertinente del restaurante
 public class Restaurante {
 	
 	private final static String LUGAR = "";
 	private static String hora;
-	private ArrayList<Platillo> menu = new ArrayList<Platillo>();
+	private static ArrayList<Platillo> menu = new ArrayList<Platillo>();
 	private static ArrayList<Mesa> mesasReservadas = new ArrayList<Mesa>();
 	private static ArrayList<Mesa> mesasDisponibles = new ArrayList<Mesa>();
 	
-	//Métodos get y set para poder modificar los atributos necesarios
-	public ArrayList<Platillo> getMenu() {
-		return menu;
+	//Mï¿½todos get y set para poder modificar los atributos necesarios
+	
+	public static ArrayList<Platillo> getMenu() {
+		return Restaurante.menu;
 	}
 	
-	public void setMenu(ArrayList<Platillo> menu) {
-		this.menu = menu;
+	public static void setMenu(ArrayList<Platillo> menu) {
+		Restaurante.menu = menu;
 	}
 	
 	public static ArrayList<Mesa> getMesasReservadas() {
@@ -54,6 +55,6 @@ public class Restaurante {
 	}
 	
 	public void cerrar() {
-		//mostrar mensaje de despedida y salir de la aplicación.
+		//mostrar mensaje de despedida y salir de la aplicaciï¿½n.
 	}
 }

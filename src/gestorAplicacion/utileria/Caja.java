@@ -4,10 +4,32 @@ public class Caja {
 	private float ingresos;
 	private float gastos;
 	private ArrayList<Pedido> pedidos = new ArrayList<Pedido>();
-	
 	public Caja(float ingresos, float gastos) {
 		this.ingresos = ingresos;
 		this.gastos = gastos;
+	}
+	
+	public String crearEstadisticas() {
+		String mensaje = "Las estadísticas de nuestro restaurante son:";
+		int posicion = 0;
+		ArrayList<Integer> cantidadPlatillosMenu = new ArrayList<Integer>();
+		for(int i = 0; i<Restaurante.getMenu().size();i++) {
+			cantidadPlatillosMenu.add(0);
+		}
+		
+		for(int i = 0;i< pedidos.size();i++) {
+			for(int j = 0;j < pedidos.get(i).getPlatillos().size();j++) {
+				posicion = Restaurante.getMenu().indexOf(pedidos.get(i).getPlatillos().get(j));
+				cantidadPlatillosMenu.set(posicion, cantidadPlatillosMenu.get(posicion) + 1);
+				
+			}
+		}
+		for(int i = 0; i<Restaurante.getMenu().size();i++) {
+			mensaje = mensaje + "\n" + Restaurante.getMenu().get(i).getNombre() + ": " + cantidadPlatillosMenu.get(i);
+		}
+		
+		
+		return mensaje;
 	}
 	
 	public void agregarPedidos(Pedido pedidox) {
