@@ -6,11 +6,12 @@ import java.util.ArrayList;
 //Clase Restarurante en la que se guarda informaci�n pertinente del restaurante
 public class Restaurante {
 	
-	private final static String LUGAR = "";
+	private final static String LUGAR = "Carrera ni idea numero 69-69 al frente de no se";
 	private static String hora;
 	private static ArrayList<Platillo> menu = new ArrayList<Platillo>();
 	private static ArrayList<Mesa> mesasReservadas = new ArrayList<Mesa>();
 	private static ArrayList<Mesa> mesasDisponibles = new ArrayList<Mesa>();
+	private static String fecha;
 	
 	//M�todos get y set para poder modificar los atributos necesarios
 	
@@ -48,6 +49,14 @@ public class Restaurante {
 
 	public static String getLugar() {
 		return LUGAR;
+	}
+	
+	public static void setFecha(String fecha) {
+		Restaurante.fecha = fecha;
+	}
+	
+	public static String getFecha() {
+		return Restaurante.fecha;
 	}
 	
 	public void abrir() {
