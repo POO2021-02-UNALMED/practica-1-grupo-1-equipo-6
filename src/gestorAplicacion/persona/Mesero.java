@@ -4,7 +4,6 @@ import gestorAplicacion.utileria.*;
 
 public class Mesero extends Persona {
 	//Agregado Caja caja;
-	private Caja caja;
 	public static int numeroMeseros;
 	public ArrayList<Cliente> clientes = new ArrayList<Cliente>();
 	public Mesero(String nombre, String documento) {
@@ -20,7 +19,7 @@ public class Mesero extends Persona {
 	}
 	public void cobrar(Cliente cliente, Pedido pedido) {
 		cliente.setPedido(pedido);
-		caja.agregarPedidos(cliente.getPedido());
+		Caja.agregarPedidos(cliente.getPedido());
 		
 	}
 	public String irse() {
@@ -29,6 +28,6 @@ public class Mesero extends Persona {
 	public String entregarDatos() {
 		return "Nombre: " + nombre + "\n" + 
 				"Documento: " + documento + "\n" +
-				"Caja: " + caja;
+				"Caja: " + "Restaurante";
 	}
 }
