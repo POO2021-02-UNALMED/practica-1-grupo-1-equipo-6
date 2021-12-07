@@ -16,8 +16,11 @@ public class Cliente extends Persona {
 		
 	}
 	public void reservar(Mesa mesa) {
-		if(mesa.isDisponibilidad() == true) {
+		if(mesa.isDisponibilidad() == true && Restaurante.getMesasDisponibles().contains(mesa)) {
 			this.mesa = mesa;
+			this.mesa.setCliente(this);
+			Restaurante.getMesasDisponibles().remove(mesa);
+			Restaurante.getMesasReservadas().add(mesa);
 			mesa.setDisponibilidad(false);
 		}
 		else {
@@ -33,6 +36,10 @@ public class Cliente extends Persona {
 	}
 	public String irse() {
 		mesa.setDisponibilidad(true);
+		Restaurante.getMesasReservadas().remove(mesa);
+		Restaurante.getMesasDisponibles().add(mesa);
+		this.mesa.setCliente(null);
+		mesa = null;
 		return "Muchas gracias por el servicio, hasta luego";
 	}
 	public Mesa getMesa() {
