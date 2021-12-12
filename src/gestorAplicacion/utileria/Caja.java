@@ -4,54 +4,36 @@ public class Caja {
 	private static  float ingresos;
 	private static  float gastos;
 	private static  ArrayList<Pedido> pedidos = new ArrayList<Pedido>();
+	
+	public static void reiniciarCaja() {
+		Caja.ingresos = 0;
+		Caja.gastos = 0;
+		pedidos = new ArrayList<Pedido>();
+		for(int i = 0;i<Restaurante.getPlatillos().size();i++)
+		{
+			Restaurante.getPlatillos().get(i).setFrecuencia(0);
+		}
+	}
 	public static String crearEstadisticas() {
-		String mensaje = "Las estadísticas de nuestro restaurante son:";
-		int posicion = 0;
-		Hashtable <Integer,String> menuOrdenado = new Hashtable<Integer,String>();
-		ArrayList<Integer> cantidadPlatillosMenu = new ArrayList<Integer>();
-		for(int i = 0; i<Restaurante.getMenu().size();i++) {
-			cantidadPlatillosMenu.add(0);
+		String mensaje = "Las estadisticas de nuestro restaurante son: \n";
+		for(int i = 0; i<Restaurante.getMenu().size(); i++)
+		{
+			mensaje += "Cantidad: " + Restaurante.getMenu().get(i).getFrecuencia()+" Platillo: " + Restaurante.getMenu().get(i).getNombre() + "\n";
 		}
-		
-		for(int i = 0;i< pedidos.size();i++) {
-			for(int j = 0;j < pedidos.get(i).getPlatillos().size();j++) {
-				posicion = Restaurante.getMenu().indexOf(pedidos.get(i).getPlatillos().get(j));
-				cantidadPlatillosMenu.set(posicion, cantidadPlatillosMenu.get(posicion) + 1);
-				
-			}
-		}
-		for(int i = 0; i<Restaurante.getMenu().size();i++) {
-			menuOrdenado.put(cantidadPlatillosMenu.get(i),Restaurante.getMenu().get(i).getNombre());
-		}
-		
-		Enumeration<Integer> e = menuOrdenado.keys();
-		while(e.hasMoreElements()) {
-			int key = e.nextElement();
-			mensaje = mensaje + "\n" + "Cantidad: " + key + "\t Platillo: " + menuOrdenado.get(key);
-		}
-		//Versión desordenada
-		/*
-		for(int i = 0; i<Restaurante.getMenu().size();i++) {
-			mensaje = mensaje + "\n" + Restaurante.getMenu().get(i).getNombre() + ": " + cantidadPlatillosMenu.get(i);
-		}
-		*/
-		
 		return mensaje;
 	}
 	
 	public static  void agregarPedidos(Pedido pedidox) {
 		Caja.pedidos.add(pedidox);
 	}
-	//Agregamos una función que coja todos los precios del pedido, 
+	//Agregamos una funcion que coja todos los precios del pedido, 
 	//para poder obtener los ingresos.
-	public static void retornarPrecioPedidos() {
+	public static float cuadrarCaja(){
 		float suma = 0;
 		for(int i = 0;i<Caja.pedidos.size();i++) {
 			suma = suma + Caja.pedidos.get(i).getPrecio();
 		}
 		Caja.ingresos = suma;
-	}
-	public static float cuadrarCaja(){
 		return Caja.ingresos;
 	}
 	//Get y sets:
