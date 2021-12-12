@@ -207,6 +207,206 @@ public class UI {
 		}
 		else if(jornada == 2) {
 			Mesero mesero = new Mesero(nombre,documento);
+			Restaurante.getMeserosHorarioNoche().add(mesero);
+		}
+	}
+	
+	public static void eliminarMeseros() {
+		int documento;
+		int posicion = -1;
+		Scanner sc = new Scanner(System.in);
+		System.out.println("Introduzca el documento de la persona que quiere eliminar:");
+		documento = sc.nextInt();
+		for(int i = 0; i< Restaurante.getMeserosHorarioTarde().size();i++) 
+		{
+			if(documento == Restaurante.getMeserosHorarioTarde().get(i).getDocumento()) {
+				posicion = i;
+			}
+		}
+		if(posicion > -1) 
+		{
+			Restaurante.getMeserosHorarioTarde().remove(posicion);
+		}
+		else 
+		{
+			for(int i = 0; i < Restaurante.getMeserosHorarioNoche().size();i++) 
+			{
+				if(documento == Restaurante.getMeserosHorarioTarde().get(i).getDocumento()) 
+				{
+					posicion = i;
+				}
+			}
+			if(posicion > -1) 
+			{
+				Restaurante.getMeserosHorarioNoche().remove(posicion);
+			}
+		}
+	}
+	
+	public static void visualizarMeseros() {
+		String Mensaje = "Meseros presentes por la tarde:";
+		for(int i = 0; i< Restaurante.getMeserosHorarioTarde().size();i++) 
+		{
+			Mensaje = Mensaje + "\n" + Restaurante.getMeserosHorarioTarde().get(i).getNombre();
+		}
+		Mensaje = Mensaje + "\n" + "Mesero presentes por la noche:";
+		for(int i = 0; i<Restaurante.getMeserosHorarioNoche().size();i++) 
+		{
+			Mensaje = Mensaje + "\n" + Restaurante.getMeserosHorarioNoche().get(i).getNombre();
+		}
+		System.out.println(Mensaje);
+	}
+	
+	public static int editarPlatillo() {
+		int seleccion;
+		Scanner sc = new Scanner(System.in);
+		System.out.println("Seleccione lo deseado:");
+		System.out.println("----------------------");
+		System.out.println("1.Crear platillo");
+		System.out.println("2.Eliminar platillo");
+		System.out.println("3.Ver platillos");
+		System.out.println("4.Volver a menu administrador");
+		seleccion = sc.nextInt();
+		return seleccion;
+	}
+	
+	public static void switchEditarPlatillo() {
+		int menuEditarPlatillo;
+		menuEditarPlatillo = editarPlatillo();
+		switch(menuEditarPlatillo) {
+		case 1: //Crear platillo
+			crearPlatillo();
+			switchEditarPlatillo();
+			break;
+		case 2: //Eliminar platillo
+			eliminarPlatillo();
+			System.out.println("Platillo eliminado \n");
+			switchEditarPlatillo();
+			break;
+		case 3: //Ver platillo
+			visualizarPlatillos();
+			switchEditarPlatillo();
+			break;
+		case 4: //Volver a menu administrador
+			switchMenuAdministrador();
+			break;
+		}
+	}
+	
+	public static void crearPlatillo() {
+		int tiempo; 
+		String nombre;
+		String tipo; 
+		String ingredientes;
+		int precio;
+		String identificador;
+		
+		
+		Scanner sc = new Scanner(System.in);
+		System.out.println("Introduzca los datos:\n");
+		System.out.println("Introduzca el nombre del platillo");
+		nombre = sc.nextLine();
+		System.out.println("Introduzca el tipo de platillo");
+		tipo = sc.nextLine();
+		System.out.println("Introduzca los ingredientes del platillo");
+		ingredientes = sc.nextLine();
+		System.out.println("Introduzca el identificador");
+		identificador = sc.nextLine();
+		System.out.println("Introduzca el precio del platillo");
+		precio = sc.nextInt();
+		System.out.println("Introduzca el tiempo de preparacion");
+		tiempo = sc.nextInt();
+		
+		Platillo platillo = new Platillo(tiempo,nombre,tipo,ingredientes, precio, identificador);
+		Restaurante.getPlatillos().add(platillo);
+	}
+	
+	public static void eliminarPlatillo() {
+		String identificador;
+		Scanner sc = new Scanner(System.in);
+		System.out.println("Introduzca el identificador del platillo que quiere eliminar");
+		identificador = sc.nextLine();
+		
+		for(int i = 0; i< Restaurante.getPlatillos().size();i++) {
+			if(Restaurante.getPlatillos().get(i).getIdentificador().equals(identificador)) 
+			{
+				Restaurante.getPlatillos().remove(i);
+			}
+		}
+		
+		for(int i = 0; i< Restaurante.getMenu().size();i++) 
+		{
+			if(Restaurante.getMenu().get(i).getIdentificador().equals(identificador))
+			{
+				Restaurante.getMenu().remove(i);
+			}
+		}
+		
+	}
+	
+	public static void visualizarPlatillos() {
+		String mensaje = "Los platillos del restaurante son:";
+		for(int i = 0; i < Restaurante.getPlatillos().size();i++) 
+		{
+			mensaje = mensaje + "\n" + Restaurante.getPlatillos().get(i).getNombre() + " : " + Restaurante.getPlatillos().get(i).getIdentificador();
+		}
+		System.out.println(mensaje + "\n");
+	}
+	
+	public static void crearMenu() {
+		String menuCrear;
+		Scanner sc = new Scanner(System.in);
+		System.out.println("Introduzca los platillos para el menu de hoy");
+		menuCrear = sc.nextLine();
+		String[] dividido = menuCrear.split(";");
+		for(int i = 0; i < dividido.length;i++) 
+		{
+			int posicion = -2;
+			for(int j = 0; j < Restaurante.getPlatillos().size();j++) 
+			{
+				if(dividido[i].equals(Restaurante.getPlatillos().get(j).getIdentificador())) 
+				{
+					Restaurante.getMenu().add(Restaurante.getPlatillos().get(j));
+				}
+			}
+		}
+	}
+	
+	public static void visualizarMenu() {
+		String mensaje = "Los platillos del menu son:";
+		for(int i = 0; i < Restaurante.getMenu().size();i++) {
+			mensaje = mensaje + "\n" + Restaurante.getMenu().get(i).getNombre();
+		}
+		System.out.println(mensaje + "\n");
+	}
+	
+	public static int editarMesa() {
+		int seleccion;
+		Scanner sc = new Scanner(System.in);
+		System.out.println("Seleccione lo deseado");
+		System.out.println("----------------------");
+		System.out.println("1.Crear mesa");
+		System.out.println("2.Eliminar mesa");
+		System.out.println("3.Ver mesas");
+		System.out.println("4.Volver a menu administrador");
+		seleccion = sc.nextInt();
+		return seleccion;
+	}
+	
+	public static void switchEditarMesa() {
+		int menuEditarMesa;
+		menuEditarMesa = editarMesa();
+		switch(menuEditarMesa) {
+		case 1: //Crear mesa
+			crearMesa();
+			switchEditarMesa();
+			break;
+		case 2: //Eliminar mesa
+			eliminarMesa();
+			System.out.println("Mesa eliminada \n");
+			switchEditarMesa();
+			break;
+		case 3:
 //Faltantes: 3.
 
 /*
