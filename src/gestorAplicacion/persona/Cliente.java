@@ -6,24 +6,26 @@ public class Cliente extends Persona {
 	//Agregado Pedido de la persona;
 	private Pedido pedido;
 	private ArrayList<Platillo> platillos = new ArrayList<Platillo>();
-	public Cliente(String nombre, String documento,Mesa mesa) {
+	public Cliente(String nombre, int documento) {
 		super(nombre,documento);
-		this.mesa = mesa;
 	}
 	public void pedirOrden(ArrayList<Platillo> platillosPedir) {
 		platillos.addAll(platillosPedir);
 		
 		
 	}
-	public void reservar(Mesa mesa) {
-		if(mesa.isDisponibilidad() == true) {
-			this.mesa = mesa;
-			mesa.setDisponibilidad(false);
+	public void reservar(int Mesa) {
+		for(int i = 0; i< Restaurante.getMesasDisponibles().size();i++) {
+			if(Restaurante.getMesasDisponibles().get(i).getNumero() == Mesa) {
+				mesa = Restaurante.getMesasDisponibles().get(i);
+				mesa.setCliente(this);
+				Restaurante.getMesasDisponibles().remove(mesa);
+				Restaurante.getMesasReservadas().add(mesa);
+				mesa.setDisponibilidad(false);
+			}
 		}
-		else {
-			//Decir que elija otra.
-		}	
 	}
+
 	public int pagar() {
 		int valorPagar = 0;
 		for(int i = 0; i<platillos.size();i++) {
@@ -31,9 +33,12 @@ public class Cliente extends Persona {
 		}
 		return valorPagar;
 	}
-	public String irse() {
+	public void irse() {
 		mesa.setDisponibilidad(true);
-		return "Muchas gracias por el servicio, hasta luego";
+		Restaurante.getMesasReservadas().remove(mesa);
+		Restaurante.getMesasDisponibles().add(mesa);
+		this.mesa.setCliente(null);
+		mesa = null;
 	}
 	public Mesa getMesa() {
 		return mesa;
@@ -54,13 +59,4 @@ public class Cliente extends Persona {
 	public void setPedido(Pedido pedido) {
 		this.pedido = pedido;
 	}
-	
-	public String entregarDatos() {
-		return "Nombre: " + nombre + "\n" + 
-				"Documento: " + documento + "\n"+
-				"Mesa: " + mesa;
-	}
-	
-	
-	
 }	

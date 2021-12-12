@@ -1,13 +1,14 @@
 //Clase Mesa, importante en la funcionalidad de administrar y verificar el estado del restaurante.
 //Autores: Michael Moreno Valoyes
 package gestorAplicacion.utileria;
-
-//Clase Mesa, desde está se define y cambia el estado de disponibilidad de las mesas presentes en el restaurante.
+import gestorAplicacion.persona.*;
+//Clase Mesa, desde estï¿½ se define y cambia el estado de disponibilidad de las mesas presentes en el restaurante.
 public class Mesa {
 	
-	private boolean disponibilidad; //este atributo no solo es cambiado según reserva sino también cuando un cliente que no ha reservado ocupa una mesa.
+	private boolean disponibilidad; //este atributo no solo es cambiado segï¿½n reserva sino tambiï¿½n cuando un cliente que no ha reservado ocupa una mesa.
 	private int numero;
 	private int sillas;
+	private Cliente cliente;
 	
 	//constructor que considera si la mesa fue reservada o no y la agrega a la lista correspondiente
 	public Mesa(boolean disponibilidad, int numero, int sillas) {
@@ -45,5 +46,11 @@ public class Mesa {
 
 	public void setSillas(int sillas) {
 		this.sillas = sillas;
+	}
+	public Cliente getCliente() {
+		return cliente;
+	}
+	public void setCliente(Cliente cliente) {
+		this.cliente = cliente;
 	}
 }

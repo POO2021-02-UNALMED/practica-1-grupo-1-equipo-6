@@ -1,29 +1,27 @@
 package gestorAplicacion.persona;
 
-public class Persona {
+public abstract class Persona {
 	protected String nombre;
-	protected String documento;
+	protected int documento;
 	public String entregarDatos() {
 		return "Nombre: " + nombre + "\n" + 
 				"Documento: " + documento;
 	}
-	public Persona(String nombre, String documento) {
+	public Persona(String nombre, int documento) {
 		this.nombre = nombre;
-		this.documento = nombre;
+		this.documento = documento;
 	}
-	public String irse() {
-		return "Hasta luego.";
-	}
+	public abstract void irse(); 
 	public String getNombre() {
 		return nombre;
 	}
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}
-	public String getDocumento() {
+	public int getDocumento() {
 		return documento;
 	}
-	public void setDocumento(String documento) {
+	public void setDocumento(int documento) {
 		this.documento = documento;
 	}
 

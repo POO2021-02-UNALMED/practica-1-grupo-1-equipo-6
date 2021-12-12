@@ -1,82 +1,59 @@
 package gestorAplicacion.utileria;
 import java.util.*;
 public class Caja {
-	private float ingresos;
-	private float gastos;
-	private ArrayList<Pedido> pedidos = new ArrayList<Pedido>();
-	public Caja(float ingresos, float gastos) {
-		this.ingresos = ingresos;
-		this.gastos = gastos;
-	}
+	private static  float ingresos;
+	private static  float gastos;
+	private static  ArrayList<Pedido> pedidos = new ArrayList<Pedido>();
 	
-	public String crearEstadisticas() {
-		String mensaje = "Las estadísticas de nuestro restaurante son:";
-		int posicion = 0;
-		Hashtable <Integer,String> menuOrdenado = new Hashtable<Integer,String>();
-		ArrayList<Integer> cantidadPlatillosMenu = new ArrayList<Integer>();
-		for(int i = 0; i<Restaurante.getMenu().size();i++) {
-			cantidadPlatillosMenu.add(0);
+	public static void reiniciarCaja() {
+		Caja.ingresos = 0;
+		Caja.gastos = 0;
+		pedidos = new ArrayList<Pedido>();
+		for(int i = 0;i<Restaurante.getPlatillos().size();i++)
+		{
+			Restaurante.getPlatillos().get(i).setFrecuencia(0);
 		}
-		
-		for(int i = 0;i< pedidos.size();i++) {
-			for(int j = 0;j < pedidos.get(i).getPlatillos().size();j++) {
-				posicion = Restaurante.getMenu().indexOf(pedidos.get(i).getPlatillos().get(j));
-				cantidadPlatillosMenu.set(posicion, cantidadPlatillosMenu.get(posicion) + 1);
-				
-			}
+	}
+	public static String crearEstadisticas() {
+		String mensaje = "Las estadisticas de nuestro restaurante son: \n";
+		for(int i = 0; i<Restaurante.getMenu().size(); i++)
+		{
+			mensaje += "Cantidad: " + Restaurante.getMenu().get(i).getFrecuencia()+" Platillo: " + Restaurante.getMenu().get(i).getNombre() + "\n";
 		}
-		for(int i = 0; i<Restaurante.getMenu().size();i++) {
-			menuOrdenado.put(cantidadPlatillosMenu.get(i),Restaurante.getMenu().get(i).getNombre());
-		}
-		
-		Enumeration<Integer> e = menuOrdenado.keys();
-		while(e.hasMoreElements()) {
-			int key = e.nextElement();
-			mensaje = mensaje + "\n" + "Cantidad: " + key + "\t Platillo: " + menuOrdenado.get(key);
-		}
-		//Versión desordenada
-		/*
-		for(int i = 0; i<Restaurante.getMenu().size();i++) {
-			mensaje = mensaje + "\n" + Restaurante.getMenu().get(i).getNombre() + ": " + cantidadPlatillosMenu.get(i);
-		}
-		*/
-		
 		return mensaje;
 	}
 	
-	public void agregarPedidos(Pedido pedidox) {
-		pedidos.add(pedidox);
+	public static  void agregarPedidos(Pedido pedidox) {
+		Caja.pedidos.add(pedidox);
 	}
-	//Agregamos una función que coja todos los precios del pedido, 
+	//Agregamos una funcion que coja todos los precios del pedido, 
 	//para poder obtener los ingresos.
-	public void retornarPrecioPedidos() {
+	public static float cuadrarCaja(){
 		float suma = 0;
-		for(int i = 0;i<pedidos.size();i++) {
-			suma = suma + pedidos.get(i).getPrecio();
+		for(int i = 0;i<Caja.pedidos.size();i++) {
+			suma = suma + Caja.pedidos.get(i).getPrecio();
 		}
-		this.ingresos = suma;
-	}
-	public float cuadrarCaja(){
-		return ingresos;
+		Caja.ingresos = suma;
+		return Caja.ingresos;
 	}
 	//Get y sets:
-	public float getIngresos() {
-		return ingresos;
+	public static float getIngresos() {
+		return Caja.ingresos;
 	}
-	public void setIngresos(float ingresos) {
-		this.ingresos = ingresos;
+	public static void setIngresos(float ingresos) {
+		Caja.ingresos = ingresos;
 	}
-	public float getGastos() {
-		return gastos;
+	public static float getGastos() {
+		return Caja.gastos;
 	}
-	public void setGastos(float gastos) {
-		this.gastos = gastos;
+	public static void setGastos(float gastos) {
+		Caja.gastos = gastos;
 	}
-	public ArrayList<Pedido> getPedidos(){
+	public static ArrayList<Pedido> getPedidos(){
 		return pedidos;
 	}
-	public void setPedidos(ArrayList<Pedido> pedidos) {
-		this.pedidos = pedidos;
+	public static void setPedidos(ArrayList<Pedido> pedidos) {
+		Caja.pedidos = pedidos;
 	}
 	//Finalizacion set y get
 }

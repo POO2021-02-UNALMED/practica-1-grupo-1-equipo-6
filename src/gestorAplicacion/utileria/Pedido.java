@@ -7,16 +7,12 @@ public class Pedido {
 	private Cliente cliente;
 	private ArrayList<Platillo> platillos = new ArrayList<Platillo>();
 	private Mesero mesero;
-	private boolean estado;
 	private float precio;
-	private Caja caja;
 	
-	public Pedido(Cliente cliente,Mesero mesero, boolean estado, float precio, Caja caja) {
+	public Pedido(Cliente cliente,Mesero mesero, float precio) {
 		this.cliente = cliente;
 		this.mesero = mesero;
-		this.estado = estado;
 		this.precio = precio;
-		this.caja = caja;
 	}
 	
 	//Gets y sets
@@ -35,27 +31,10 @@ public class Pedido {
 	public void setPrecio(float precio) {
 		this.precio = precio;
 	}
-	
-	public boolean isEstado() {
-		return estado;
-	}
-	
-	public void setEstado(boolean estado) {
-		this.estado = estado;
-	}
-	
-	public Caja getCaja() {
-		return caja;
-	}
-	
-	public void setCaja(Caja caja) {
-		this.caja = caja;
-	}
-	
 	//Finalizacion sets y gets.
+	
 	public void borrarPedido() {
-		estado = false;
-		caja.agregarPedidos(this);
+		Caja.agregarPedidos(this);
 	}
 	
 	public Mesero getMesero() {
@@ -65,15 +44,15 @@ public class Pedido {
 	//metodo que genera la string de la factura
 	public String facturar () {
 		
-		//variables útiles para el proceso de crear la factura, la variable factura se inicializa con elencabezado de todas las facturas
+		//variables utiles para el proceso de crear la factura, la variable factura se inicializa con elencabezado de todas las facturas
 		ArrayList<String> repetidos = new ArrayList<>();		
-		String factura = "Restaurante Mira tu que curioso no lo hemos nombrado\n" + 
+		String factura = "Restaurante Nia learned to cook!\n" + 
 						 Restaurante.getFecha() + " " + Restaurante.getHora() + "\n" 
 						 + "Cliente: " + this.cliente.getNombre() + "       " + "Mesero: " + this.mesero.getNombre() + "\n"
 						 + " \n" + " \n"
 						 + "Platillos\n";
 		
-		//se checa la cantidad de veces que está un platillo y se agrega el platillo, su frecuencia y el precio de todas las unidades juntas
+		//se checa la cantidad de veces que esta un platillo y se agrega el platillo, su frecuencia y el precio de todas las unidades juntas
 		for (int i = 0; i < this.platillos.size(); i++) {
 			int ocurrences = Collections.frequency(this.platillos, this.platillos.get(i));
 			if (ocurrences > 1 && !(repetidos.contains(this.platillos.get(i).getNombre()))) {
@@ -92,6 +71,7 @@ public class Pedido {
 				   + "Gracias por visitarnos! \n"
 				   + Restaurante.getLugar() + " \n"
 				   + "315 525 6969";
+		Caja.agregarPedidos(this);
 		return factura;
 	}
 }
