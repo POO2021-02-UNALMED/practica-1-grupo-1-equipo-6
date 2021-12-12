@@ -407,6 +407,207 @@ public class UI {
 			switchEditarMesa();
 			break;
 		case 3:
+			visualizarMesas();
+			switchMenuAdministrador();
+			break;
+		case 4: //Volver a menu administrador
+			switchMenuAdministrador();
+			break;
+		}
+	}
+	
+	public static void crearMesa() {
+		int numero;
+		int sillas;
+		Scanner sc = new Scanner(System.in);
+		System.out.println("Introduzca los datos:");
+		System.out.println("Introduzca el numero de la mesa");
+		numero = sc.nextInt();
+		System.out.println("Introduzca el numero de sillas");
+		sillas = sc.nextInt();
+		Mesa mesa = new Mesa(true,numero,sillas);
+	}
+	
+	public static void eliminarMesa() {
+		int numero;
+		Scanner sc = new Scanner(System.in);
+		System.out.println("Introduzca el numero de la mesa que quiere eliminar");
+		numero = sc.nextInt();
+		for(int i = 0; i< Restaurante.getMesasDisponibles().size(); i++) 
+		{
+			if(numero == Restaurante.getMesasDisponibles().get(i).getNumero()) 
+			{
+				Restaurante.getMesasDisponibles().remove(i);
+			}
+		}
+	}
+	
+	public static void visualizarMesas()
+	{
+		String mesasDisponibles = "Las mesas disponibles ahora mismo son:";
+		for(int i = 0; i< Restaurante.getMesasDisponibles().size();i++) {
+			mesasDisponibles = mesasDisponibles + "\n" + Restaurante.getMesasDisponibles().get(i).getNumero() + "\n";
+		}
+		System.out.println(mesasDisponibles);
+	}
+	
+	public static int menuMesero() {
+		int seleccion;
+		Scanner sc = new Scanner(System.in);
+		System.out.println("Seleccione lo deseado:");
+		System.out.println("-----------------------");
+		System.out.println("1.Asignar mesa y hacer el pedido");
+		System.out.println("2.Ver pedido");
+		System.out.println("3.Crear factura a una mesa ");
+		System.out.println("4.Retornar al inicio");
+		System.out.println("La opcion seleccionada es: ");
+		seleccion = sc.nextInt();
+		return seleccion;
+	}
+	
+	public static void switchMenuMesero() {
+		int seleccionMenuMesero;
+		seleccionMenuMesero = menuMesero();
+		switch(seleccionMenuMesero) {
+		case 1: //Pedir pedido + asignar mesa
+			crearPedido();
+			switchMenuMesero();
+			break;
+		case 2: //Visualizar pedido de una mesa
+			verPedido();
+			switchMenuMesero();
+			break;
+		case 3: //Crear factura a una mesa
+			crearFactura();
+			switchMenuMesero();
+			break;
+		case 4: //Retornar al inicio
+			switchInicial();
+			break;
+		}
+	}
+	
+	public static void crearPedido() {
+		int documentoM;
+		String nombre;
+		int documento;
+		int mesa;
+		int totalPlatillos;
+		ArrayList<Platillo> platillos = new ArrayList<Platillo>();
+		Pedido pedido = null;
+		
+		Scanner sc = new Scanner(System.in);
+		System.out.println("Introduzca los datos del cliente");
+		System.out.println("Nombre");
+		nombre = sc.nextLine();
+		System.out.println("Documento");
+		documento = sc.nextInt();
+		System.out.println("Mesa");
+		mesa = sc.nextInt();
+		Cliente cliente = new Cliente(nombre,documento);
+		cliente.reservar(mesa);
+		while(cliente.getMesa() == null) {
+			System.out.println("No se asigno la mesa indicada, vuelva a intentar");
+			System.out.println("Introduzca la mesa");
+			mesa = sc.nextInt();
+			cliente.reservar(mesa);
+		}
+		System.out.println("Cuantos platillos tiene el pedido?");
+		totalPlatillos = sc.nextInt();
+		sc.nextLine();
+		for(int i = 0; i < totalPlatillos; i++)
+		{
+			String identificador;
+			int frecuencia;
+			System.out.println("Introduzca el identificador del platillo:");
+			identificador = sc.nextLine();
+			System.out.println("Cuantos?");
+			frecuencia = sc.nextInt();
+			for(int j = 0; j < frecuencia; j++)
+			{
+				Platillo platillo = null;
+				for(int k = 0; k < Restaurante.getPlatillos().size(); k++)
+				{
+					if(Restaurante.getPlatillos().get(k).getIdentificador().equals(identificador))
+					{
+						platillo = Restaurante.getPlatillos().get(k);
+						break;
+					}
+				}
+				platillos.add(platillo);
+				platillo.setFrecuencia(platillo.getFrecuencia() + 1);
+			}
+		}
+		System.out.println("Introduzca su documento:");
+		documentoM = sc.nextInt();
+		if(Restaurante.getHora().equals("Tarde"))
+		{
+			for(int i = 0; i < Restaurante.getMeserosHorarioTarde().size(); i++)
+			{
+				if(Restaurante.getMeserosHorarioTarde().get(i).getDocumento() == documentoM)
+				{
+					pedido = new Pedido(cliente, Restaurante.getMeserosHorarioTarde().get(i),0);
+					break;
+				}
+				else if(Restaurante.getMeserosHorarioNoche().get(i).getDocumento() == documentoM)
+				{
+					pedido = new Pedido(cliente, Restaurante.getMeserosHorarioNoche().get(i),0);
+					break;
+				}
+			}
+		}
+		
+		pedido.setPlatillos(platillos);
+		cliente.setPedido(pedido);
+		System.out.println("Pedido creado");
+	}
+	
+	public static void verPedido() {
+		int numeroMesa;
+		Mesa mesa = null;
+		Scanner sc = new Scanner(System.in);
+		System.out.println("Digite la mesa del pedido que quiere consultar");
+		numeroMesa = sc.nextInt();
+		for(int i = 0; i < Restaurante.getMesasReservadas().size();i++) {
+			if(numeroMesa == Restaurante.getMesasReservadas().get(i).getNumero()) {
+				mesa = Restaurante.getMesasReservadas().get(i);
+			}
+		}
+		String info = "Cliente: " + mesa.getCliente().getNombre() + "       " + "Mesero: " + mesa.getCliente().getPedido().getMesero().getNombre() + "\n"
+				 + " \n" + " \n"
+				 + "Platillos\n";
+		ArrayList<String> repetidos = new ArrayList<>();
+		for (int i = 0; i < mesa.getCliente().getPedido().getPlatillos().size(); i++) {
+			int ocurrences = Collections.frequency(mesa.getCliente().getPedido().getPlatillos(), mesa.getCliente().getPedido().getPlatillos().get(i));
+			if (ocurrences > 1 && !(repetidos.contains(mesa.getCliente().getPedido().getPlatillos().get(i).getNombre()))) {
+				info += mesa.getCliente().getPedido().getPlatillos().get(i).getNombre() + " * " + ocurrences + "\n";
+				repetidos.add(mesa.getCliente().getPedido().getPlatillos().get(i).getNombre());
+			} 
+			else if (ocurrences == 1)
+			{
+				info += mesa.getCliente().getPedido().getPlatillos().get(i).getNombre() + " * " + ocurrences + "\n";
+			}
+		}
+		System.out.println(info);
+	}
+	
+	public static void crearFactura() {
+		int numeroMesa;
+		Mesa mesa;
+		Scanner sc = new Scanner(System.in);
+		System.out.println("Digite la mesa con el pedido a facturar:");
+		numeroMesa = sc.nextInt();
+		for(int i = 0; i < Restaurante.getMesasReservadas().size();i++) 
+		{
+			if(numeroMesa == Restaurante.getMesasReservadas().get(i).getNumero()) 
+			{
+				mesa = Restaurante.getMesasReservadas().get(i);
+				System.out.println(mesa.getCliente().getPedido().facturar());
+				mesa.getCliente().irse();
+			}
+		}
+	}
+}
 //Faltantes: 3.
 
 /*
