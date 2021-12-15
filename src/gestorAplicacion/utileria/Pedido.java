@@ -4,7 +4,7 @@ import gestorAplicacion.persona.*;
 import java.util.Collections;
 import java.io.Serializable;
 
-public class Pedido implements Serializable{
+public class Pedido implements Serializable, Facturacion{
 	
 	private static final long serialVersionUID = 8L;
 	private Cliente cliente;

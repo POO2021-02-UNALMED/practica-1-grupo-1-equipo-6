@@ -1,13 +1,13 @@
 package uiMain;
 import java.util.*;
 import gestorAplicacion.utileria.*;
+import gestorAplicacion.utileria.Restaurante.Jornada;
 import gestorAplicacion.persona.*;
 import baseDatos.*;
 
 public class UI {
 	public static void main(String[] args)
 	{
-		
 		Deserializador.deserializar();
 		switchInicial();
 	}
@@ -120,11 +120,20 @@ public class UI {
 				break;
 			case 4: //Cambiar jornada
 				String seleccion;
+				Jornada j = null;
 				Scanner sc = new Scanner(System.in);
 				System.out.println("");
 				System.out.println("Escriba la jornada actual(Tarde, Noche):");
 				seleccion = sc.nextLine();
-				Restaurante.setHora(seleccion);
+				if(seleccion.equals("Tarde"))
+				{
+					j = Jornada.TARDE;
+				}
+				else if(seleccion.equals("Noche"))
+				{
+					j = Jornada.NOCHE;
+				}
+				Restaurante.setHora(j);
 				System.out.println("Jornada cambiada a: " + Restaurante.getHora() + "\n");
 				switchMenuAdministrador();
 				break;
@@ -544,7 +553,7 @@ public class UI {
 		}
 		System.out.println("Introduzca su documento:");
 		documentoM = sc.nextInt();
-		if(Restaurante.getHora().equals("Tarde"))
+		if(Restaurante.getHora() == Jornada.TARDE)
 		{
 			for(int i = 0; i < Restaurante.getMeserosHorarioTarde().size(); i++)
 			{

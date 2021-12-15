@@ -5,13 +5,17 @@ import java.util.ArrayList;
 import gestorAplicacion.persona.*;
 import java.io.Serializable;
 
-//Clase Restarurante en la que se guarda informaci�n pertinente del restaurante
+//Clase Restarurante en la que se guarda informacion pertinente del restaurante
 public class Restaurante implements Serializable{
 	
+	public enum Jornada 
+	{
+		TARDE, NOCHE
+	}
 	private static final long serialVersionUID = 1L;
-	private final static String LUGAR = "Carrera ni idea numero 69-69 al frente de no se";
+	private final static String LUGAR = "Carrera 39 numero 56-22";
 	//Hora: Tarde y Noche
-	private static String hora = "Tarde";
+	private static Jornada hora = Jornada.TARDE;
 	private static ArrayList<Platillo> menu = new ArrayList<Platillo>();
 	private static ArrayList<Mesa> mesasReservadas = new ArrayList<Mesa>();
 	private static ArrayList<Mesa> mesasDisponibles = new ArrayList<Mesa>();
@@ -71,11 +75,11 @@ public class Restaurante implements Serializable{
 		Restaurante.mesasDisponibles = mesasDisponibles;
 	}
 
-	public static String getHora() {
+	public static Jornada getHora() {
 		return Restaurante.hora;
 	}
 
-	public static void setHora(String hora) {
+	public static void setHora(Jornada hora) {
 		Restaurante.hora = hora;
 	}
 
@@ -110,7 +114,7 @@ public class Restaurante implements Serializable{
 			mensajeClientes = mensajeClientes + "\n" + nombreCliente;
 			
 		}
-		if(Restaurante.hora == "Tarde") {
+		if(Restaurante.hora == Jornada.TARDE) {
 			for(int i = 0; i<Restaurante.meserosHorarioTarde.size();i++) {
 				mensajeMeseros = mensajeMeseros + "\n" + Restaurante.meserosHorarioTarde.get(i).getNombre();
 			}
