@@ -2,8 +2,11 @@ package gestorAplicacion.utileria;
 import java.util.*;
 import gestorAplicacion.persona.*;
 import java.util.Collections;
+import java.io.Serializable;
 
-public class Pedido {
+public class Pedido implements Serializable{
+	
+	private static final long serialVersionUID = 8L;
 	private Cliente cliente;
 	private ArrayList<Platillo> platillos = new ArrayList<Platillo>();
 	private Mesero mesero;

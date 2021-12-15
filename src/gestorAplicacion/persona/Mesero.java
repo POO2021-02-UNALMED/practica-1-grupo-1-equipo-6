@@ -2,6 +2,8 @@ package gestorAplicacion.persona;
 import gestorAplicacion.utileria.*;
 
 public class Mesero extends Persona {
+	
+	private static final long serialVersionUID = 6L;
 	//Agregado Caja caja;
 	public static int numeroMeseros;
 	public Mesero(String nombre, int documento) {

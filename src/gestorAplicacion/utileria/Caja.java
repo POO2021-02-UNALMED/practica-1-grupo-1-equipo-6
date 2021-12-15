@@ -1,6 +1,10 @@
 package gestorAplicacion.utileria;
 import java.util.*;
-public class Caja {
+import java.io.Serializable;
+
+public class Caja implements Serializable{
+	
+	private static final long serialVersionUID = 2L;
 	private static  float ingresos;
 	private static  float gastos;
 	private static  ArrayList<Pedido> pedidos = new ArrayList<Pedido>();

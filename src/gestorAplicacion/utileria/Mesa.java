@@ -2,9 +2,12 @@
 //Autores: Michael Moreno Valoyes
 package gestorAplicacion.utileria;
 import gestorAplicacion.persona.*;
+import java.io.Serializable;
+
 //Clase Mesa, desde est� se define y cambia el estado de disponibilidad de las mesas presentes en el restaurante.
-public class Mesa {
+public class Mesa implements Serializable{
 	
+	private static final long serialVersionUID = 7L;
 	private boolean disponibilidad; //este atributo no solo es cambiado seg�n reserva sino tambi�n cuando un cliente que no ha reservado ocupa una mesa.
 	private int numero;
 	private int sillas;

@@ -3,10 +3,12 @@
 package gestorAplicacion.utileria;
 import java.util.ArrayList;
 import gestorAplicacion.persona.*;
+import java.io.Serializable;
 
 //Clase Restarurante en la que se guarda informaci�n pertinente del restaurante
-public class Restaurante {
+public class Restaurante implements Serializable{
 	
+	private static final long serialVersionUID = 1L;
 	private final static String LUGAR = "Carrera ni idea numero 69-69 al frente de no se";
 	//Hora: Tarde y Noche
 	private static String hora = "Tarde";

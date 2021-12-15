@@ -1,10 +1,12 @@
 //Clase platillo para tener informaci�n especifica de los platillos presentes en el menu y poder agregarlos a las ordenes,
-//parte importante de la funcionalidad de facturaci�n.
+//parte importante de la funcionalidad de facturacion.
 //Autores: Michael Moreno Valoyes
 package gestorAplicacion.utileria;
+import java.io.Serializable;
 
-public class Platillo {
+public class Platillo implements Serializable{
 	
+	private static final long serialVersionUID = 9L;
 	private int tiempo; //Tiempo estimado que tarda el platillo en estar listo.
 	private String nombre;
 	private String tipo; //Especifica si el platillo es desayuno, almuerzo o cena

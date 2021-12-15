@@ -2,6 +2,8 @@ package gestorAplicacion.persona;
 import java.util.*;
 import gestorAplicacion.utileria.*;
 public class Cliente extends Persona {
+	
+	private static final long serialVersionUID = 5L;
 	private Mesa mesa;
 	//Agregado Pedido de la persona;
 	private Pedido pedido;

@@ -2,10 +2,13 @@ package uiMain;
 import java.util.*;
 import gestorAplicacion.utileria.*;
 import gestorAplicacion.persona.*;
+import baseDatos.*;
 
 public class UI {
 	public static void main(String[] args)
 	{
+		
+		Deserializador.deserializar();
 		switchInicial();
 	}
 	
@@ -37,6 +40,7 @@ public class UI {
 				break;
 			case 3:
 				System.out.println("Hasta luego!");
+				Serializador.serializar();
 				System.exit(0);
 				break;
 		}
