@@ -95,14 +95,6 @@ public class Restaurante implements Serializable{
 		return Restaurante.fecha;
 	}
 	
-	public void abrir() {
-		//mostrar mensaje de bienvenida en la interfaz.
-	}
-	
-	public void cerrar() {
-		//mostrar mensaje de despedida y salir de la aplicacion.
-	}
-	
 	//Estado del restaurante:
 	public static String estadoRestaurante() {
 		String mensajeClientes = "Los clientes actuales son: ";
