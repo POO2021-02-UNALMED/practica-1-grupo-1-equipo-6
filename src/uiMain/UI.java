@@ -536,14 +536,15 @@ public class UI {
 			identificador = sc.nextLine();
 			System.out.println("Cuantos?");
 			frecuencia = sc.nextInt();
+			sc.nextLine();
 			for(int j = 0; j < frecuencia; j++)
 			{
 				Platillo platillo = null;
-				for(int k = 0; k < Restaurante.getPlatillos().size(); k++)
+				for(int k = 0; k < Restaurante.getMenu().size(); k++)
 				{
-					if(Restaurante.getPlatillos().get(k).getIdentificador().equals(identificador))
+					if(Restaurante.getMenu().get(k).getIdentificador().equals(identificador))
 					{
-						platillo = Restaurante.getPlatillos().get(k);
+						platillo = Restaurante.getMenu().get(k);
 						break;
 					}
 				}
@@ -562,7 +563,13 @@ public class UI {
 					pedido = new Pedido(cliente, Restaurante.getMeserosHorarioTarde().get(i),0);
 					break;
 				}
-				else if(Restaurante.getMeserosHorarioNoche().get(i).getDocumento() == documentoM)
+			}
+		}
+		if(Restaurante.getHora() == Jornada.NOCHE)
+		{
+			for(int i = 0; i < Restaurante.getMeserosHorarioNoche().size(); i++)
+			{
+				if(Restaurante.getMeserosHorarioNoche().get(i).getDocumento() == documentoM)
 				{
 					pedido = new Pedido(cliente, Restaurante.getMeserosHorarioNoche().get(i),0);
 					break;

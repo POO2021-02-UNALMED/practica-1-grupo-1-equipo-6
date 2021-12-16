@@ -9,7 +9,7 @@ import gestorAplicacion.persona.*;
 import java.util.ArrayList;
 
 public class Deserializador {
-	private static File ruta = new File("src\\baseDatos\\temp");
+	private static File ruta = new File("src/baseDatos/temp");
 	
 	@SuppressWarnings("unchecked")
 	public static void deserializar()

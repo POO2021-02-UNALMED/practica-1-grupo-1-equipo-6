@@ -9,7 +9,7 @@ import gestorAplicacion.utileria.Restaurante;
 import gestorAplicacion.utileria.Caja;
 
 public class Serializador {
-	private static File ruta = new File("src\\baseDatos\\temp");
+	private static File ruta = new File("src/baseDatos/temp");
 	
 	public static void serializar()
 	{
