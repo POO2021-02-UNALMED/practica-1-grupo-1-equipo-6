@@ -1,9 +1,12 @@
-//Clase platillo para tener informaciï¿½n especifica de los platillos presentes en el menu y poder agregarlos a las ordenes,
-//parte importante de la funcionalidad de facturacion.
+//Clase platillo 
 //Autores: Michael Moreno Valoyes
+//para tener informacion especifica de los platillos presentes en el menu y poder agregarlos a las ordenes,
+//parte importante de la funcionalidad de facturacion.
+
 package gestorAplicacion.utileria;
 import java.io.Serializable;
 
+// La clase Platillo contiene los datos del platillo como el tiempo de preparación, su nombre, tipo, ingredientes, precio, identificador, frecuencia que es la cantidad de veces que se ha pedido
 public class Platillo implements Serializable{
 	
 	private static final long serialVersionUID = 9L;
@@ -16,7 +19,7 @@ public class Platillo implements Serializable{
 	private int frecuencia; //cantidad de veces que el platillo fue pedido
 	
 	
-	
+	//Constructor
 	public Platillo(int tiempo, String nombre, String tipo, String ingredientes, int precio, String identificador) {
 		this.tiempo = tiempo;
 		this.nombre = nombre;
@@ -26,7 +29,7 @@ public class Platillo implements Serializable{
 		this.setIdentificador(identificador);
 	}
 
-	//mï¿½todos get y set de los atributos
+	//metodos get y set del atributo tiempo
 	public int getTiempo() {
 		return tiempo;
 	}
@@ -35,6 +38,7 @@ public class Platillo implements Serializable{
 		this.tiempo = tiempo;
 	}
 	
+	//metodos get y set del atributo nombre
 	public String getNombre() {
 		return nombre;
 	}
@@ -43,6 +47,7 @@ public class Platillo implements Serializable{
 		this.nombre = nombre;
 	}
 	
+	//metodos get y set del atributo tipo
 	public String getTipo() {
 		return tipo;
 	}
@@ -51,6 +56,7 @@ public class Platillo implements Serializable{
 		this.tipo = tipo;
 	}
 	
+	//metodos get y set del atributo ingredientes
 	public String getIngredientes() {
 		return ingredientes;
 	}
@@ -58,7 +64,8 @@ public class Platillo implements Serializable{
 	public void setIngredientes(String ingredientes) {
 		this.ingredientes = ingredientes;
 	}
-
+	
+	//metodos get y set del atributo precio
 	public int getPrecio() {
 		return precio;
 	}
@@ -66,7 +73,8 @@ public class Platillo implements Serializable{
 	public void setPrecio(int precio) {
 		this.precio = precio;
 	}
-
+	
+	//metodos get y set del atributo identificador
 	public String getIdentificador() {
 		return identificador;
 	}
@@ -74,7 +82,8 @@ public class Platillo implements Serializable{
 	public void setIdentificador(String identificador) {
 		this.identificador = identificador;
 	}
-
+	
+	//metodos get y set del atributo frecuencia
 	public int getFrecuencia() {
 		return frecuencia;
 	}

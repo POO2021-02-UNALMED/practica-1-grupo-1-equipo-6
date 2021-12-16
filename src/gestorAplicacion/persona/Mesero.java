@@ -13,12 +13,14 @@ public class Mesero extends Persona {
 	//Agregado Caja caja;
 	public static int numeroMeseros;
 	
-	//Constructor Pide nombre y documento
+	//Constructor 
+	//Pide nombre y documento
 	public Mesero(String nombre, int documento) {
 		super(nombre,documento);
 		Mesero.numeroMeseros++;
 	}
 	
+	//Metodo cobrar
 	//El metodo cobrar es usado para agregar a la caja el pedido para poder utilizarlo en los metodos de caja
 	//los parametros de entrada son cliente y pedido
 	//Le asigna al cliente el pedido y el pedido a la caja

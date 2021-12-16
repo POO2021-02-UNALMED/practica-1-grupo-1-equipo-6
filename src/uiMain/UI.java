@@ -1,3 +1,8 @@
+// Clase UI
+// Autores: Santiago Salazar, Michael Moreno, Jane Gutierrez
+// Esta clase corresponde a la interfaz de usuario, es la cual imprime los menus y porcesa los input
+
+
 package uiMain;
 import java.util.*;
 import gestorAplicacion.utileria.*;

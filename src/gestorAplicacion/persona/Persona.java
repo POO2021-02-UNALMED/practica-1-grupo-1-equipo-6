@@ -19,12 +19,13 @@ public abstract class Persona implements Serializable{
 	}
 	
 	//Constructor
+	//Pide nombre y documento
 	public Persona(String nombre, int documento) {
 		this.nombre = nombre;
 		this.documento = documento;
 	}
 	
-	//Metodo abstracto para irse
+	//Metodo abstracto irse
 	public abstract void irse(); 
 	
 	//Metodos get y set de Nombre

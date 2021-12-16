@@ -17,10 +17,12 @@ public class Cliente extends Persona {
 	private ArrayList<Platillo> platillos = new ArrayList<Platillo>();
 	
 	//Construcctor
+	//Pide nombre y documento
 	public Cliente(String nombre, int documento) {
 		super(nombre,documento);
 	}
 	
+	//Metodo pedirOrden
 	//Metodo para pedir orden, agregamos los platillos al cliente, pueden pedir más platillos más tarde
 	//Se ingresa un ArrayList de los objetos de clase Platillo que ordena el cliente, puede pedir multiples veces
 	public void pedirOrden(ArrayList<Platillo> platillosPedir) {
@@ -28,6 +30,7 @@ public class Cliente extends Persona {
 		
 	}
 	
+	//Metodo reservar
 	//El metodo reservar recive el identificador (int) de la mesa a reservar
 	//luego verifica las mesas del restaurante y le asigna la mesa al cliente correspondiente
 	public void reservar(int Mesa) {
@@ -42,6 +45,7 @@ public class Cliente extends Persona {
 		}
 	}
 
+	//Metodo pagar
 	//El metodo pagar regresa el valor a pagar, sumando el precio de la lista de platillos del cliente
 	public int pagar() {
 		int valorPagar = 0;
@@ -51,6 +55,7 @@ public class Cliente extends Persona {
 		return valorPagar;
 	}
 	
+	//Metodo irse
 	//El metodo irse regresa a la mesa a ser disponible, actualiza el numero de mesas reservadas y disponibles
 	// y en el objeto mesa elimina el cliente y quita la mesa del cliente
 	public void irse() {

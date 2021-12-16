@@ -1,3 +1,7 @@
+// Clase Pedido
+// Autor: Santiago Salazar
+//
+
 package gestorAplicacion.utileria;
 import java.util.*;
 import gestorAplicacion.persona.*;

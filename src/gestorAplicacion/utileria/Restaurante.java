@@ -1,5 +1,7 @@
-//Clase restaurante, guarda informaciï¿½n del restaurante, contiene informaciï¿½n del mismo, importante en la funcionalidad del estado del restaurante.
+//Clase restaurante
 //Autores: Michael Moreno Valoyes
+//Guarda informacion del restaurante, contiene informaciï¿½n del mismo, importante en la funcionalidad del estado del restaurante.
+
 package gestorAplicacion.utileria;
 import java.util.ArrayList;
 import gestorAplicacion.persona.*;
@@ -8,6 +10,7 @@ import java.io.Serializable;
 //Clase Restarurante en la que se guarda informacion pertinente del restaurante
 public class Restaurante implements Serializable{
 	
+	//Jornada es un atributo del tipo enumerado
 	public enum Jornada 
 	{
 		TARDE, NOCHE
@@ -16,21 +19,30 @@ public class Restaurante implements Serializable{
 	private final static String LUGAR = "Carrera 39 numero 56-22";
 	//Hora: Tarde y Noche
 	private static Jornada hora = Jornada.TARDE;
-	private static ArrayList<Platillo> menu = new ArrayList<Platillo>();
+	//El atrubuto menu tiene los platillos disponibles en el dia
+	private static ArrayList<Platillo> menu = new ArrayList<Platillo>(); 
 	private static ArrayList<Mesa> mesasReservadas = new ArrayList<Mesa>();
 	private static ArrayList<Mesa> mesasDisponibles = new ArrayList<Mesa>();
 	private static String fecha = "17 de Diciembre";
+	// Los meseros de los horarios tarde y noche se guardan en su correspondiente lista
 	private static ArrayList<Mesero> meserosHorarioTarde = new ArrayList<Mesero>();
 	private static ArrayList<Mesero> meserosHorarioNoche = new ArrayList<Mesero>();
+	//
 	private static ArrayList<Platillo> platillos = new ArrayList<Platillo>();
+	
+	
 	//Metodos get y set para poder modificar los atributos necesarios
 	
-	
-	
+	//Metodos get y set para el atributo menu
 	public static ArrayList<Platillo> getMenu() {
 		return Restaurante.menu;
 	}
+	
+	public static void setMenu(ArrayList<Platillo> menu) {
+		Restaurante.menu = menu;
+	}
 
+	//Metodos get y set para el atributo platillos
 	public static ArrayList<Platillo> getPlatillos() {
 		return platillos;
 	}
@@ -39,6 +51,7 @@ public class Restaurante implements Serializable{
 		Restaurante.platillos = platillos;
 	}
 
+	//Metodos get y set para el atributo meserosHorarioTarde
 	public static ArrayList<Mesero> getMeserosHorarioTarde() {
 		return meserosHorarioTarde;
 	}
@@ -47,6 +60,7 @@ public class Restaurante implements Serializable{
 		Restaurante.meserosHorarioTarde = meserosHorarioTarde;
 	}
 
+	//Metodos get y set para el atributo meserosHorarioNoche
 	public static ArrayList<Mesero> getMeserosHorarioNoche() {
 		return meserosHorarioNoche;
 	}
@@ -54,11 +68,8 @@ public class Restaurante implements Serializable{
 	public static void setMeserosHorarioNoche(ArrayList<Mesero> meserosHorarioNoche) {
 		Restaurante.meserosHorarioNoche = meserosHorarioNoche;
 	}
-
-	public static void setMenu(ArrayList<Platillo> menu) {
-		Restaurante.menu = menu;
-	}
 	
+	//Metodos get y set para el atributo de las mesas reservadas
 	public static ArrayList<Mesa> getMesasReservadas() {
 		return Restaurante.mesasReservadas;
 	}
@@ -67,6 +78,7 @@ public class Restaurante implements Serializable{
 		Restaurante.mesasReservadas = mesasReservadas;
 	}
 	
+	//Metodos get y set para el atributo de las mesas disponibles
 	public static ArrayList<Mesa> getMesasDisponibles() {
 		return Restaurante.mesasDisponibles;
 	}
@@ -75,6 +87,7 @@ public class Restaurante implements Serializable{
 		Restaurante.mesasDisponibles = mesasDisponibles;
 	}
 
+	//Metodos get y set para el atributo hora
 	public static Jornada getHora() {
 		return Restaurante.hora;
 	}
@@ -83,10 +96,12 @@ public class Restaurante implements Serializable{
 		Restaurante.hora = hora;
 	}
 
+	//Metodos get para el atributo del lugar
 	public static String getLugar() {
 		return Restaurante.LUGAR;
 	}
 	
+	//Metodos get y set para el atributo fecha
 	public static void setFecha(String fecha) {
 		Restaurante.fecha = fecha;
 	}
@@ -96,6 +111,7 @@ public class Restaurante implements Serializable{
 	}
 	
 	//Estado del restaurante:
+	// un string que contiene el estado del restaurante, los clientes actuales, meseros, y mesas disponibles, recorriendo cada uno y añadiendolos al string
 	public static String estadoRestaurante() {
 		String mensajeClientes = "Los clientes actuales son: ";
 		String mensajeMeseros = "Los meseros actuales son: ";

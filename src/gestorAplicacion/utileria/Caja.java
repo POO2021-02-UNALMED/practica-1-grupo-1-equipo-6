@@ -1,3 +1,7 @@
+// Clase Caja
+// Autor: Santiago 
+// 
+
 package gestorAplicacion.utileria;
 import java.util.*;
 import java.io.Serializable;
