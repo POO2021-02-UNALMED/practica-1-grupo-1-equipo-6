@@ -1,6 +1,6 @@
 // Clase Pedido
 // Autor: Santiago Salazar
-//
+// La clase pedido presenta el metodo fracrurar que hace la factura del pedido y se utiliza al pagar
 
 package gestorAplicacion.utileria;
 import java.util.*;
@@ -8,6 +8,8 @@ import gestorAplicacion.persona.*;
 import java.util.Collections;
 import java.io.Serializable;
 
+// Clase pedido
+//implementa la interfaz facturación, y obligatoriamente el metodo facturar
 public class Pedido implements Serializable, Facturacion{
 	
 	private static final long serialVersionUID = 8L;
@@ -16,13 +18,14 @@ public class Pedido implements Serializable, Facturacion{
 	private Mesero mesero;
 	private float precio;
 	
+	//Constructor
 	public Pedido(Cliente cliente,Mesero mesero, float precio) {
 		this.cliente = cliente;
 		this.mesero = mesero;
 		this.precio = precio;
 	}
 	
-	//Gets y sets
+	//Metodos get y set para el atributo platillo
 	public ArrayList<Platillo> getPlatillos(){
 		return platillos;
 	}
@@ -31,6 +34,7 @@ public class Pedido implements Serializable, Facturacion{
 		this.platillos = platillos;
 	}
 	
+	//Metodos get y set para el atributo precio
 	public float getPrecio() {
 		return precio;
 	}
@@ -38,15 +42,23 @@ public class Pedido implements Serializable, Facturacion{
 	public void setPrecio(float precio) {
 		this.precio = precio;
 	}
-	//Finalizacion sets y gets.
 	
+	//Metodos get y set para el atributo mesero
+	public Mesero getMesero() {
+		return mesero;
+	}
+	
+	public void setMesero(Mesero mesero) {
+		this.mesero = mesero;
+	}
+	
+	//Metodo borrarPedido
+	//El pedido se dejara de usar para el cliente y se agrega el pedido a la caja para las estadisticas
 	public void borrarPedido() {
 		Caja.agregarPedidos(this);
 	}
 	
-	public Mesero getMesero() {
-		return mesero;
-	}
+
 	
 	//metodo que genera la string de la factura
 	public String facturar () {
