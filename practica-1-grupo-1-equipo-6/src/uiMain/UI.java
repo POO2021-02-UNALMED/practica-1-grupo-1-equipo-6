@@ -375,7 +375,6 @@ public class UI {
 			break;
 		case 2: //Eliminar platillo
 			eliminarPlatillo();
-			System.out.println("Platillo eliminado \n");
 			switchEditarPlatillo();
 			break;
 		case 3: //Ver platillo
@@ -461,6 +460,9 @@ public class UI {
 		}
 		if(funcional == 0) {
 			System.out.println("No existe ese platillo, por favor introduzca otro identificador");
+		}
+		else {
+			System.out.println("Platillo eliminado \n");
 		}
 		
 	}
