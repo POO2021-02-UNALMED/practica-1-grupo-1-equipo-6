@@ -1,7 +1,7 @@
 import tkinter as tk
 from turtle import pos
 from PIL import ImageTk, Image
-import ventanaUsuario
+from ventanaUsuarioC import Ventana
 import os
 
 os.chdir(r"C:\Users\Usuario\Documents\La nacho stuff\Poo\trabajo2\practica2\UI")
@@ -65,8 +65,7 @@ panel.bind("<Button 1>", cambiarImagen)
 
 
 def crearVentanaUsuario():
-    ventanaUsuario.ventanaUsuario(window)
-
+    Ventana(window, [], [])
 
 botonAplicacion = tk.Button(
     master=p4, text="Aplicación", width=10, height=5, bg="gray", command=crearVentanaUsuario)
