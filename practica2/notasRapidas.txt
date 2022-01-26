@@ -1,0 +1,7 @@
+Agregar:
+Editar mesero, Editar Mesa, Editar Menú, Editar Platillos
+
+Fuente:
+Comic Sans MS 
+12 texto plano
+16 titulos

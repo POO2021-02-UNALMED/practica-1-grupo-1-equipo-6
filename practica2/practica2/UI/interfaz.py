@@ -1,6 +1,10 @@
 import tkinter as tk
 from turtle import pos
 from PIL import ImageTk, Image
+import ventanaUsuario
+import os
+
+os.chdir(r"C:\Users\Usuario\Documents\La nacho stuff\Poo\trabajo2\practica2\UI")
 window = tk.Tk()
 # Dimensiones de mi computador
 window.geometry("1280x800")
@@ -25,9 +29,8 @@ textoBienvenida.config(state=tk.DISABLED)
 # P4
 p4 = tk.Frame(master=frameIzquierdo, width=530, height=480, bg="blue")
 p4.place(x=10, y=150)
-Imagenes = ["Uno.jpg", "Dos.jpeg", "Tres.jpg", "Cuatro.jpg"]
-img = ImageTk.PhotoImage(
-    (Image.open("Uno.jpg")).resize((400, 400), Image.ANTIALIAS))
+Imagenes = ["Imagenes\\Uno.jpg", "Imagenes\\Dos.jpeg", "Imagenes\\Tres.jpg", "Imagenes\\Cuatro.jpg"]
+img = ImageTk.PhotoImage((Image.open("Imagenes\\Uno.jpg")).resize((400, 400), Image.ANTIALIAS))
 panel = tk.Label(master=p4, image=img)
 # Para que el garbage collector no lo borre
 panel.image = img
@@ -62,10 +65,7 @@ panel.bind("<Button 1>", cambiarImagen)
 
 
 def crearVentanaUsuario():
-    ventanaUsuario = tk.Toplevel(master=window)  # La ventana del usuario
-    ventanaUsuario.title("Restaurante")
-    ventanaUsuario.geometry("1280x800")
-    window.withdraw()  # Desaparece la ventana
+    ventanaUsuario.ventanaUsuario(window)
 
 
 botonAplicacion = tk.Button(
@@ -93,26 +93,26 @@ posicionTexto = 0
 # P6 (Las imagenes cambiantes):
 # Imagen 1
 img1 = ImageTk.PhotoImage(
-    (Image.open("1.png")).resize((282, 235), Image.ANTIALIAS))
+    (Image.open("Imagenes\\1.png")).resize((282, 235), Image.ANTIALIAS))
 panel1 = tk.Label(master=p6, image=img1)
 panel1.grid(row=0, column=0)
 # Imagen 2
 img2 = ImageTk.PhotoImage(
-    (Image.open("2.jpeg")).resize((282, 235), Image.ANTIALIAS))
+    (Image.open("Imagenes\\2.jpeg")).resize((282, 235), Image.ANTIALIAS))
 panel2 = tk.Label(master=p6, image=img2)
 panel2.grid(row=0, column=1)
 # Imagen 3
 img3 = ImageTk.PhotoImage(
-    (Image.open("3.jpg")).resize((282, 235), Image.ANTIALIAS))
+    (Image.open("Imagenes\\3.jpg")).resize((282, 235), Image.ANTIALIAS))
 panel3 = tk.Label(master=p6, image=img3)
 panel3.grid(row=1, column=0)
 # Imagen 4
 img4 = ImageTk.PhotoImage(
-    (Image.open("4.jpg")).resize((282, 235), Image.ANTIALIAS))
+    (Image.open("Imagenes\\4.jpg")).resize((282, 235), Image.ANTIALIAS))
 panel4 = tk.Label(master=p6, image=img4)
 panel4.grid(row=1, column=1)
-ImagenesTotales = [["1.png", "2.jpeg", "3.jpg", "4.jpg"], [
-    "5.jpg", "6.jpg", "7i.jpg", "8.jpg"], ["9.jpg", "10.png", "11.jpg", "12.jpg"]]
+ImagenesTotales = [["Imagenes\\1.png", "Imagenes\\2.jpeg", "Imagenes\\3.jpg", "Imagenes\\4.jpg"], [
+    "Imagenes\\5.jpg", "Imagenes\\6.jpg", "Imagenes\\7i.jpg", "Imagenes\\8.jpg"], ["Imagenes\\9.jpg", "Imagenes\\10.png", "Imagenes\\11.jpg", "Imagenes\\12.jpg"]]
 # Para que el garbage corrector no borre nada
 panel1.image = img1
 panel2.image = img2
