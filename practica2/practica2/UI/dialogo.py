@@ -10,8 +10,9 @@ class FieldFrame(Frame):
         self._tituloValores = tituloValores
         self._valores = valores
         self._habilitado = habilitado
-        from ventanaUsuario import bastardos
+        from ventanaUsuario import bastardos,hijos
         bastardos.clear()
+        hijos.clear()
 
         titulo = Label(master=self.master, text=self._nombre, height=3, width=100, justify=CENTER, font=("Comic Sans MS","12"), fg="blue")
         titulo.grid(column=1, row=1, padx=150, pady=10, columnspan=2, rowspan=2)

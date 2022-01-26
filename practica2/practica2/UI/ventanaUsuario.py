@@ -46,11 +46,15 @@ def ventanaUsuario(master):
         mensaje = """Aplicacion de gestión de restaurante, desde esta\nse crean las facturas, se revisa o cambia el estado\nactual del restaurante y se revisa la caja del día"""
         tk.messagebox.showinfo(title="Aplicacion", message=mensaje, parent=ventanaUsuario)
 
-    def factura():
+    #Función para limpiar el pane
+    def cleanPane():
         for bastardo in bastardos:
             bastardo.grid_forget()
         for hijo in hijos:
             pane0.forget(hijo)
+
+    def factura():
+        cleanPane()
         nombre = "Creacion de pedidos y facturación"
         descripcion = "Con este formulario, se crea una factura, calculando el precio y guardando el pedido en caja"
         tituloCriterios = "Criterios"
@@ -59,10 +63,7 @@ def ventanaUsuario(master):
         FieldFrame(pane0, nombre, descripcion, tituloCriterios, criterios, tituloV, [])
 
     def mesero():
-        for bastardo in bastardos:
-            bastardo.grid_forget()
-        for hijo in hijos:
-            pane0.forget(hijo)
+        cleanPane()
         nombre = "Edición de meseros"
         descripcion = "Con este formulario se puede buscar, añadir o eliminar un mesero"
         tituloCriterios = "Criterios"
@@ -71,10 +72,7 @@ def ventanaUsuario(master):
         FieldFrame(pane0, nombre, descripcion, tituloCriterios, criterios, tituloV)
 
     def mesa():
-        for bastardo in bastardos:
-            bastardo.grid_forget()
-        for hijo in hijos:
-            pane0.forget(hijo)
+        cleanPane()
         nombre = "Edicion de mesas"
         descripcion = "Con este formulario se pueden añadir o quitar mesas"
         tituloCriterios = "Criterios"
@@ -83,10 +81,7 @@ def ventanaUsuario(master):
         FieldFrame(pane0, nombre, descripcion, tituloCriterios, criterios, tituloV)
 
     def menu():
-        for bastardo in bastardos:
-            bastardo.grid_forget()
-        for hijo in hijos:
-            pane0.forget(hijo)
+        cleanPane()
         nombre="Edición del menú"
         descripcion="Con este formulario se pueden añadir o quitar platillos del menú de ambas jornadas"
         tituloCriterios = "Criterios"
@@ -95,10 +90,7 @@ def ventanaUsuario(master):
         FieldFrame(pane0, nombre, descripcion, tituloCriterios, criterios, tituloV)
 
     def platillos():
-        for bastardo in bastardos:
-            bastardo.grid_forget()
-        for hijo in hijos:
-            pane0.forget(hijo)
+        cleanPane()
         nombre="Edición de platillo"
         descripcion="Con este formulario se pueden añadir o quitar un platillo de los registrados en el sistema"
         tituloCriterios = "Criterios"
@@ -109,10 +101,7 @@ def ventanaUsuario(master):
         FieldFrame(pane0, nombre, descripcion, tituloCriterios, criterios, tituloV, valores, habilitado)
 
     def jornada():
-        for bastardo in bastardos:
-            bastardo.grid_forget()
-        for hijo in hijos:
-            pane0.forget(hijo)
+        cleanPane()
         nombre="Revision/Cambio de Jornada"
         descripcion="Formulario simple para cambiar la Jornada del restaurante"
         tituloCriterios = "Criterios"
@@ -123,10 +112,7 @@ def ventanaUsuario(master):
         FieldFrame(pane0, nombre, descripcion, tituloCriterios, criterios, tituloV, valores, habilitado)
 
     def estado():
-        for bastardo in bastardos:
-            bastardo.grid_forget()
-        for hijo in hijos:
-            pane0.forget(hijo)
+        cleanPane()
         string="Aquí solo se muestra texto dependiendo de cada comando,\n si es posible haré que desde un principio cumpla la condición de\ncambiar su tamaño según el tamaño de la pantalla\nSPOILER:no supe, luego vemos\nMENTIRA SI SUPÉ BUAJAJAJAJAJA"
         label = Label(master=pane0, text=string, justify=CENTER, width=1280, height=800, font=("Comic Sans MS", "30"))
         pane0.add(label)
@@ -141,10 +127,7 @@ def ventanaUsuario(master):
         pane0.bind("<Configure>", cambioT)
 
     def caja():
-        for bastardo in bastardos:
-            bastardo.grid_forget()
-        for hijo in hijos:
-            pane0.forget(hijo)
+        cleanPane()
         string="Aquí solo se muestra texto dependiendo de cada comando,\n si es posible haré que desde un principio cumpla la condición de\ncambiar su tamaño según el tamaño de la pantalla\nSPOILER:no supe, luego vemos\nMENTIRA SI SUPÉ BUAJAJAJAJAJA"
         label = Label(master=pane0, text=string, justify=CENTER, width=1280, height=800, font=("Comic Sans MS", "30"))
         pane0.add(label)
@@ -159,10 +142,7 @@ def ventanaUsuario(master):
         pane0.bind("<Configure>", cambioT)
 
     def estadistica():
-        for bastardo in bastardos:
-            bastardo.grid_forget()
-        for hijo in hijos:
-            pane0.forget(hijo)
+        cleanPane()
         string="Aquí solo se muestra texto dependiendo de cada comando,\n si es posible haré que desde un principio cumpla la condición de\ncambiar su tamaño según el tamaño de la pantalla\nSPOILER:no supe, luego vemos\nMENTIRA SI SUPÉ BUAJAJAJAJAJA"
         label = Label(master=pane0, text=string, justify=CENTER, width=1280, height=800, font=("Comic Sans MS", "30"))
         pane0.add(label)
