@@ -98,5 +98,6 @@ class Restaurante:
             for elemento in cls.meserosHorarioNoche:
                 mensajeMeseros = mensajeMeseros + "\n" + elemento.getNombre()
         for elemento in Restaurante.mesasDisponibles:
-            mensajeMesasDisponibles = mensajeMesasDisponibles + "\n" + elemento.getNumero()
+            mensajeMesasDisponibles = mensajeMesasDisponibles + \
+                "\n" + str(elemento.getNumero())
         return mensajeClientes + "\n" + mensajeMeseros + "\n" + mensajeMesasDisponibles

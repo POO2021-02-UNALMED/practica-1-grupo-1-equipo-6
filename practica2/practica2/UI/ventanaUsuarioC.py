@@ -40,7 +40,7 @@ class Ventana(Toplevel):
         self.imgLabel.grid(column=1, row=2)
         self._bastardos.append(self.imgLabel)
 
-        textoPlaceholder = "Esperamos que tenga un buen día usuario.\nPara usar las funcionalidades del programa podrá acceder a procesos y consultas, donde están:\nEditar platillos:\nCrea, elimina o ve los platillos, dependiendo de la acción que escriba el usuario(Crear,Eliminar,Ver). Se genera un código automáticamente para el usuario.\nEditar menú:\nCon los platillos generados puede crear un menú, para insertar más de un platillo al menú se escriben los platillos separados por una ", ".\nEditar mesa:\nSimilar a editar platillos, pero con mesas.\nEditar mesero:\nSimilar a editar platillos, pero con meseros.\nJornada:\nSe inserta Tarde o Noche para editar la hora del restaurante.\nEstadísticas del restaurante:\nEstadísticas de los platillos.\nCaja:\nDinero obtenido en el día.\nEstado:\nMuestra los clientes, meseros y mesas disponibles actuales.\nFacturar:\nSe factura con los elementos presentados. Se resalta que para asignar los platillos se debe de separar como:\nID_Platillo:Numero_Platillo,...,ID_Platillo_n:Numero_Platillo_n"
+        textoPlaceholder = "Esperamos que tenga un buen día usuario.\nPara usar las funcionalidades del programa podrá acceder a procesos y consultas, donde están:\nEditar platillos:\nCrea, elimina o ve los platillos, dependiendo de la acción que escriba el usuario(Crear,Eliminar,Ver). Se genera un código automáticamente para el usuario.\nEditar menú:\nCon los platillos generados puede crear un menú, para insertar más de un platillo al menú se escriben los platillos separados por una ", ".\nEditar mesa:\nSimilar a editar platillos, pero con mesas.\nEditar mesero:\nSimilar a editar platillos, pero con meseros.\nJornada:\nSe inserta Tarde o Noche para editar la hora del restaurante.\nEstadísticas del restaurante:\nEstadísticas de los platillos.\nCaja:\nPuede visualizar el dinero ganado en el día o reiniciar la caja\nEstado:\nMuestra los clientes, meseros y mesas disponibles actuales.\nFacturar:\nSe factura con los elementos presentados. Se resalta que para asignar los platillos se debe de separar como:\nID_Platillo:Numero_Platillo,...,ID_Platillo_n:Numero_Platillo_n.\nHay 2 funciones más, para agregar platillos a un pedido y crear un pedido"
         self.iniTexto = Label(master=self.pane0, height=25, width=45,
                               text=textoPlaceholder, font=("Times New Roman", "12"))
         self.iniTexto.grid(column=2, row=2)
@@ -74,7 +74,12 @@ class Ventana(Toplevel):
         self.menu_procesos.add_separator
         self.menu_procesos.add_command(
             label="Editar platillos", command=self.platillos)
-
+        self.menu_procesos.add_separator
+        self.menu_procesos.add_command(
+            label="Crear pedido", command=self.pedido)
+        self.menu_procesos.add_separator
+        self.menu_procesos.add_command(
+            label="Agregar platillo a pedido", command=self.agregarPlatillo)
         # Ayuda
         self.menu_ayuda = tk.Menu(self.menubar, tearoff=False)
         self.menu_ayuda.add_command(
@@ -110,42 +115,87 @@ class Ventana(Toplevel):
         mensaje = """Aplicacion de gestión de restaurante, desde esta\nse crean las facturas, se revisa o cambia el estado\nactual del restaurante y se revisa la caja del día"""
         tk.messagebox.showinfo(
             title="Aplicacion", message=mensaje, parent=self)
-    # Interfaz para la factura
+    # Interfaz para agregar platillos a pedido
 
-    def factura(self):
-        from gestorAplicacion.personas.cliente import Cliente
-        from gestorAplicacion.utileria.pedido import Pedido
+    def agregarPlatillo(self):
         self.cleanPane()
-        nombre = "Creacion de pedidos y facturación"
-        descripcion = "Con este formulario, se crea una factura, calculando el precio y guardando el pedido en caja"
+        nombre = "Agregar platillos"
+        descripcion = "Con este formulario se van a agregar platillos a una mesa"
         tituloCriterios = "Criterios"
-        criterios = ["Mesa", "ID Cliente", "Nombre Cliente",
-                     "ID Mesero", "Fecha", "Platillos"]
+        criterios = ["Mesa", "Platillos"]
         tituloV = "Valores"
-        objetoFactura = FieldFrame(self.pane0, nombre, descripcion,
-                                   tituloCriterios, criterios, tituloV, [], [])
-        # La función para crear la factura (parte lógica)
+        objetoAgregarPlatillo = FieldFrame(self.pane0, nombre, descripcion,
+                                           tituloCriterios, criterios, tituloV, [], [])
 
-        def crearFactura():
+        def crearAgregarPlatillo():
+            Platillos = []
+            mesa = int(objetoAgregarPlatillo._entries[0].get())
+            # Buscar la mesa entre las mesas reservadas
+            for elemento in Restaurante.getMesasReservadas():
+                if elemento.getNumero() == mesa:
+                    Mesa = elemento
+            # Platillos
+            platillos = objetoAgregarPlatillo._entries[1].get()
+            platillosFacturaCantidad = platillos.split(",")
+            # Por cada id:cantidad
+            for dividido in platillosFacturaCantidad:
+                # dividido1 = Id del platillo
+                # dividido2 = cantidad del platillo
+                divididoNuevo = dividido.split(":")
+                dividido1 = int(divididoNuevo[0])
+                dividido2 = int(divididoNuevo[1])
+                # Hora de buscar por el menú del restaurante, para saber si lo introducido está
+                for elementos in Restaurante.getMenu():
+                    if elementos.getIdentificador() == dividido1:
+                        platillo = elementos
+                # Se aumenta la frecuencia del platillo
+                platillo.setFrecuencia(
+                    platillo.getFrecuencia() + dividido2)
+                # Se agregan a Platillos (Los platillos del pedido)
+                for i in range(0, dividido2):
+                    Platillos.append(platillo)
+            # Agregarlo al pedido
+            for elemento in Platillos:
+                Mesa.getCliente().getPedido().getPlatillos().append(elemento)
+
+        def limpiarTexto():
+            for entradas in objetoAgregarPlatillo._entries:
+                entradas.delete(0, END)
+        # Botones
+        objetoAgregarPlatillo._botones[0].configure(
+            command=crearAgregarPlatillo)
+        objetoAgregarPlatillo._botones[1].configure(command=limpiarTexto)
+    # Interfaz para crear pedido
+
+    def pedido(self):
+        from gestorAplicacion.utileria.pedido import Pedido
+        from gestorAplicacion.personas.cliente import Cliente
+        self.cleanPane()
+        nombre = "Creación de pedido"
+        descripcion = "Crear el pedido"
+        tituloCriterios = "Criterios"
+        criterios = ["ID Mesero", "Nombre Cliente",
+                     "Documento Cliente", "Mesa", "Platillos"]
+        tituloV = "Valores"
+        objetoPedido = FieldFrame(self.pane0, nombre, descripcion,
+                                  tituloCriterios, criterios, tituloV, [], [])
+        # La función de crear el pedido
+
+        def crearPedido():
             # Los platillos de la factura
             Platillos = []
-            # Mesa de la factura
-            mesa = int(objetoFactura._entries[0].get())
-            # Documento del cliente
-            documentoCliente = int(objetoFactura._entries[1].get())
-            # Nombre del cliente
-            nombreCliente = objetoFactura._entries[2].get()
             # Documento del mesero
-            documentoMesero = int(objetoFactura._entries[3].get())
-            # Fecha
-            fecha = objetoFactura._entries[4].get()
-            # Va a ser con la id del platillo, no con el nombre
-            # Forma de introducir: idplatillo:cantidad,idplatillo2,cantidad2
-            platillos = objetoFactura._entries[5].get()
-            # Se crea el cliente
+            documentoMesero = int(objetoPedido._entries[0].get())
+            # Nombre del cliente
+            nombreCliente = objetoPedido._entries[1].get()
+            # Documento del cliente
+            documentoCliente = int(objetoPedido._entries[2].get())
+            # mesa
+            mesa = int(objetoPedido._entries[3].get())
             clienteNuevo = Cliente(nombreCliente, documentoCliente)
-            # Se reserva la mesa
             clienteNuevo.reservar(mesa)
+            # Platillos
+            platillos = objetoPedido._entries[4].get()
             platillosFacturaCantidad = platillos.split(",")
             # Por cada id:cantidad
             for dividido in platillosFacturaCantidad:
@@ -179,6 +229,30 @@ class Ventana(Toplevel):
             pedido.setPlatillos(Platillos)
             clienteNuevo.setPedido(pedido)
 
+        def limpiarTexto():
+            for entradas in objetoPedido._entries:
+                entradas.delete(0, END)
+        # Boton para aceptar
+        objetoPedido._botones[0].configure(command=crearPedido)
+        objetoPedido._botones[1].configure(command=limpiarTexto)
+
+    # Interfaz para la factura
+
+    def factura(self):
+        from gestorAplicacion.personas.cliente import Cliente
+        from gestorAplicacion.utileria.pedido import Pedido
+        self.cleanPane()
+        nombre = "Creacion de facturación"
+        descripcion = "Con este formulario, se crea una factura, calculando el precio y guardando el pedido en caja"
+        tituloCriterios = "Criterios"
+        criterios = ["Mesa"]
+        tituloV = "Valores"
+        objetoFactura = FieldFrame(self.pane0, nombre, descripcion,
+                                   tituloCriterios, criterios, tituloV, [], [])
+        # La función para crear la factura (parte lógica)
+
+        def crearFactura():
+            mesa = int(objetoFactura._entries[0].get())
             # Ya se creó el pedido, ahora toca es crear la factura
             # Buscar la mesa en mesas reservadas
             for elementos in Restaurante.getMesasReservadas():
@@ -560,24 +634,44 @@ class Ventana(Toplevel):
 
     def caja(self):
         from gestorAplicacion.utileria.caja import Caja
-        # Función de la caja
-        Caja.cuadrarCaja()
         self.cleanPane()
-        string = "Las ganancias de hoy fueron: $" + \
-            str(Caja.getIngresos()) + "\n"
-        label = Label(master=self.pane0, text=string, justify=CENTER,
-                      width=1280, height=800, font=("Times New Roman", "30"))
-        self.pane0.add(label)
-        self._hijos.append(label)
+        nombre = "Caja"
+        descripcion = "Puede ver las ganancias del día o reiniciar la caja"
+        tituloCriterios = "Criterios"
+        criterios = ["Accion(Reiniciar,Ver)"]
+        tituloV = "Valores"
+        objetoCaja = FieldFrame(self.pane0, nombre, descripcion,
+                                tituloCriterios, criterios, tituloV, [], [])
+        # Editar la caja
 
-        def cambioT(event=None):
-            x = label.winfo_width()
-            y = label.winfo_height()
-            if x < y:
-                label.config(font=("Times New Roman", (x*30)//1280))
-            else:
-                label.config(font=("Times New Roman", (y*30)//800))
-        self.pane0.bind("<Configure>", cambioT)
+        def editarCaja():
+            accion = objetoCaja._entries[0].get()
+            if accion == "Reiniciar":
+                Caja.reiniciarCaja()
+            elif accion == "Ver":
+                self.cleanPane()
+                Caja.cuadrarCaja()
+                string = "Las ganancias de hoy fueron: $" + \
+                    str(Caja.getIngresos()) + "\n"
+                label = Label(master=self.pane0, text=string, justify=CENTER,
+                              width=1280, height=800, font=("Times New Roman", "30"))
+                self.pane0.add(label)
+                self._hijos.append(label)
+
+                def cambioT(event=None):
+                    x = label.winfo_width()
+                    y = label.winfo_height()
+                    if x < y:
+                        label.config(font=("Times New Roman", (x*30)//1280))
+                    else:
+                        label.config(font=("Times New Roman", (y*30)//800))
+                self.pane0.bind("<Configure>", cambioT)
+
+        def limpiarTexto():
+            for entradas in objetoCaja._entries:
+                entradas.delete(0, END)
+        objetoCaja._botones[0].configure(command=editarCaja)
+        objetoCaja._botones[1].configure(command=limpiarTexto)
     # Las estadísticas del restaurante
 
     def estadistica(self):

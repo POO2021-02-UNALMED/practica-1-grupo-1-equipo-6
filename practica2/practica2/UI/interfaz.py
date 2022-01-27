@@ -7,7 +7,6 @@ import pickle
 from gestorAplicacion.utileria.restaurante import Restaurante
 from gestorAplicacion.utileria.caja import Caja
 
-
 # Deserializar
 # Menú:
 abrirMenu = open('menu', 'rb')
@@ -31,10 +30,9 @@ abrirPedidos = open('pedidos', 'rb')
 Caja.setPedidos(pickle.load(abrirPedidos))
 abrirPedidos.close()
 # Platillos
-abrirPlatillos = open('pedidos', 'rb')
+abrirPlatillos = open('platillos', 'rb')
 Restaurante.setPlatillos(pickle.load(abrirPlatillos))
 abrirPlatillos.close()
-
 os.getcwd()
 window = tk.Tk()
 # Dimensiones de mi computador
@@ -44,10 +42,10 @@ window.title("Restaurante")
 window.resizable(width=False, height=False)
 # Frame izquierdo 1 (P1)
 frameIzquierdo = tk.Frame(master=window, width=550,
-                          height=650, bg="red", borderwidth=5)
+                          height=650, borderwidth=5)
 frameIzquierdo.place(x=50, y=50)
 # Frame derecho 1 (P2)
-frameDerecho = tk.Frame(master=window, width=580, height=650, bg="red")
+frameDerecho = tk.Frame(master=window, width=580, height=650)
 frameDerecho.place(x=650, y=50)
 # P3
 p3 = tk.Frame(master=frameIzquierdo, width=530, height=130)
@@ -59,7 +57,7 @@ Texto = "Bienvenido a nuestra aplicación, esperamos que tenga una\nexperiencia 
 textoBienvenida.insert(tk.END, Texto)
 textoBienvenida.config(state=tk.DISABLED)
 # P4
-p4 = tk.Frame(master=frameIzquierdo, width=530, height=480, bg="blue")
+p4 = tk.Frame(master=frameIzquierdo, width=530, height=480)
 p4.place(x=10, y=150)
 Imagenes = ["Imagenes\\Uno.jpg", "Imagenes\\Dos.jpeg",
             "Imagenes\\Tres.jpg", "Imagenes\\Cuatro.jpg"]
@@ -106,10 +104,10 @@ botonAplicacion = tk.Button(
     master=p4, text="Aplicación", width=10, height=5, bg="gray", command=crearVentanaUsuario)
 botonAplicacion.place(x=425, y=385)
 # P6
-p6 = tk.Frame(master=frameDerecho, width=565, height=470, bg="blue")
+p6 = tk.Frame(master=frameDerecho, width=565, height=470)
 p6.place(x=5, y=175)
 # P5
-p5 = tk.Frame(master=frameDerecho, width=560, height=160, bg="blue")
+p5 = tk.Frame(master=frameDerecho, width=560, height=160)
 p5.place(x=10, y=10)
 
 # Separación para la hoja de vida e imagenes
