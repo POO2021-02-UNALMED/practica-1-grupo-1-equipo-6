@@ -3,11 +3,43 @@ from turtle import pos
 from PIL import ImageTk, Image
 from ventanaUsuarioC import Ventana
 import os
+import pickle
+from gestorAplicacion.utileria.restaurante import Restaurante
+from gestorAplicacion.utileria.caja import Caja
 
-os.chdir(r"C:\Users\Usuario\Documents\La nacho stuff\Poo\trabajo2\practica2\UI")
+
+# Deserializar
+# Menú:
+abrirMenu = open('menu', 'rb')
+Restaurante.setMenu(pickle.load(abrirMenu))
+abrirMenu.close()
+
+# Mesas
+abrirMesa = open('mesas', 'rb')
+Restaurante.setMesasDisponibles(pickle.load(abrirMesa))
+abrirMesa.close()
+# Meseros tarde
+abrirMeserosTarde = open('meserosTarde', 'rb')
+Restaurante.setMeserosHorarioTarde(pickle.load(abrirMeserosTarde))
+abrirMeserosTarde.close()
+# Meseros Noche
+abrirMeserosNoche = open('meserosNoche', 'rb')
+Restaurante.setMeserosHorarioNoche(pickle.load(abrirMeserosNoche))
+abrirMeserosNoche.close()
+# Pedidos
+abrirPedidos = open('pedidos', 'rb')
+Caja.setPedidos(pickle.load(abrirPedidos))
+abrirPedidos.close()
+# Platillos
+abrirPlatillos = open('pedidos', 'rb')
+Restaurante.setPlatillos(pickle.load(abrirPlatillos))
+abrirPlatillos.close()
+
+os.getcwd()
 window = tk.Tk()
 # Dimensiones de mi computador
 window.geometry("1280x800")
+window.title("Restaurante")
 # No dejo cambiar el tamaño de la ventana (para que no afecte en la visualización del programa)
 window.resizable(width=False, height=False)
 # Frame izquierdo 1 (P1)
@@ -29,8 +61,10 @@ textoBienvenida.config(state=tk.DISABLED)
 # P4
 p4 = tk.Frame(master=frameIzquierdo, width=530, height=480, bg="blue")
 p4.place(x=10, y=150)
-Imagenes = ["Imagenes\\Uno.jpg", "Imagenes\\Dos.jpeg", "Imagenes\\Tres.jpg", "Imagenes\\Cuatro.jpg"]
-img = ImageTk.PhotoImage((Image.open("Imagenes\\Uno.jpg")).resize((400, 400), Image.ANTIALIAS))
+Imagenes = ["Imagenes\\Uno.jpg", "Imagenes\\Dos.jpeg",
+            "Imagenes\\Tres.jpg", "Imagenes\\Cuatro.jpg"]
+img = ImageTk.PhotoImage(
+    (Image.open("Imagenes\\Uno.jpg")).resize((400, 400), Image.ANTIALIAS))
 panel = tk.Label(master=p4, image=img)
 # Para que el garbage collector no lo borre
 panel.image = img
@@ -66,6 +100,7 @@ panel.bind("<Button 1>", cambiarImagen)
 
 def crearVentanaUsuario():
     Ventana(window, [], [])
+
 
 botonAplicacion = tk.Button(
     master=p4, text="Aplicación", width=10, height=5, bg="gray", command=crearVentanaUsuario)
@@ -173,6 +208,35 @@ def mostrarDescripcion():
         labelDescripcion.place(x=0, y=410)
     else:
         labelDescripcion.place_forget()
+# Comando para serializar
+
+
+def serializar():
+    # Menu:
+    pickeMenu = open('menu', 'wb')
+    pickle.dump(Restaurante.getMenu(), pickeMenu)
+    pickeMenu.close()
+    # Mesas
+    pickeMesas = open('mesas', 'wb')
+    pickle.dump(Restaurante.getMesasDisponibles(), pickeMesas)
+    pickeMesas.close()
+    # Pedidos:
+    pickePedidos = open('pedidos', 'wb')
+    pickle.dump(Caja.getPedidos(), pickePedidos)
+    pickePedidos.close()
+    # Platillos:
+    pickePlatillos = open('platillos', 'wb')
+    pickle.dump(Restaurante.getPlatillos(), pickePlatillos)
+    pickePlatillos.close()
+    # Meseros tarde:
+    pickeMeserosTarde = open('meserosTarde', 'wb')
+    pickle.dump(Restaurante.getMeserosHorarioTarde(), pickeMeserosTarde)
+    pickeMeserosTarde.close()
+    # Meseros Noche
+    pickeMeserosNoche = open('meserosNoche', 'wb')
+    pickle.dump(Restaurante.getMeserosHorarioNoche(), pickeMeserosNoche)
+    pickeMeserosNoche.close()
+    window.destroy()
 
 
 menubar = tk.Menu(window)
@@ -184,7 +248,7 @@ file_menu.add_command(
 file_menu.add_separator()
 file_menu.add_command(
     label='Salir',
-    command=window.destroy
+    command=serializar
 )
 menubar.add_cascade(
     label="Inicio",
