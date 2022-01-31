@@ -1,4 +1,5 @@
 # Clase Pedido
+# Autor: Santiago Salazar Ramirez
 # La clase pedido presenta el método facturar que hace la factura del pedido, se utiliza al pagar
 
 from gestorAplicacion.utileria.facturacion import Facturacion

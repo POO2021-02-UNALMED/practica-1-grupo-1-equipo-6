@@ -1,3 +1,6 @@
+# Clase FieldFrame
+# Autor: Michael Moreno Valoyes
+# Crea los formularios según la funcionalidad
 from tkinter import *
 
 

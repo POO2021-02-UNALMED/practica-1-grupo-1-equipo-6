@@ -1,4 +1,8 @@
 # Los objetos de esta clase son los clientes del restaurante, ellos son quienes reservan, hacen pedidos y pagan.
+# Clase cliente
+# Autor: Santiago Salazar Ramirez
+# Los objetos de esta clase son los clientes del restaurante, ellos son quienes reservan, hacen pedidos, y pagan
+
 from gestorAplicacion.personas.persona import Persona
 
 

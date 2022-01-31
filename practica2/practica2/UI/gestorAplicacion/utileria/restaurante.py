@@ -1,10 +1,21 @@
 # Clase restaurante
+# Autor: Michael Moreno Valoyes
 # Guarda información del restaurante, contiene información del mismo, importante en la funcionalidad
 # del estado del restaurante
+
+# Del enum
+import enum
+
+
+class Jornada(enum.Enum):
+    Tarde = "Tarde"
+    Noche = "Noche"
+
+
 class Restaurante:
     LUGAR = "Carrera 39 numero 56-22"
     # Hora: Tarde y Noche
-    hora = "Tarde"
+    hora = Jornada.Tarde.value
     menu = []
     mesasReservadas = []
     mesasDisponibles = []

@@ -1,4 +1,5 @@
 # Clase caja
+# Autor: Santiago Salazar Ramirez
 # La clase caja es útil a la hora de cuadrar caja, generar estadísticas de cierto día, y eliminar  los datos de un día para iniciar en el día 0.
 # Guarda ingresos, gastos y los pedidos para la creación de estadísticas
 class Caja:

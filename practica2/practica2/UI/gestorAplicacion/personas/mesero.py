@@ -1,4 +1,6 @@
 from gestorAplicacion.personas.persona import Persona
+# Clase mesero
+# Autor: Santiago Salazar Ramirez
 # Esta clase se utiliza a la hora de hacer un pedido y cobrar al cliente.
 # La clase mesero hereda de Persona, es utilizada para cobrar al cliente. (También para pedir pedidos al mismo)
 

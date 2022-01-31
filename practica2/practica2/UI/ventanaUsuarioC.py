@@ -1,3 +1,7 @@
+# Clase ventana
+# Autores: Michael Moreno Valoyes, Santiago Salazar y Jane Gutierrez
+# Crea toda la ventana del usuario y sus respectivas funcionalidades
+
 from distutils import command
 import random
 import tkinter as tk
@@ -5,7 +9,9 @@ from typing import Container
 from dialogo import FieldFrame
 import os
 from tkinter import *
-
+# Importar excepciones
+import excepciones
+from gestorAplicacion.utileria.facturacion import Facturacion
 from gestorAplicacion.utileria.restaurante import Restaurante
 os.getcwd()
 
@@ -111,6 +117,9 @@ class Ventana(Toplevel):
         mensaje = "Desarrollado por:\nSantiago Salazar Ramirez\nMichael Moreno Valoyes\nJane Juliana Gutierrez"
         tk.messagebox.showinfo(title="Acerca de", message=mensaje, parent=self)
 
+    def crearAlertaExcepcion(self, mensaje):
+        tk.messagebox.showinfo(title="Error", message=mensaje, parent=self)
+
     def infoApp(self):
         mensaje = """Aplicacion de gestión de restaurante, desde esta\nse crean las facturas, se revisa o cambia el estado\nactual del restaurante y se revisa la caja del día"""
         tk.messagebox.showinfo(
@@ -129,34 +138,49 @@ class Ventana(Toplevel):
 
         def crearAgregarPlatillo():
             Platillos = []
-            mesa = int(objetoAgregarPlatillo._entries[0].get())
-            # Buscar la mesa entre las mesas reservadas
-            for elemento in Restaurante.getMesasReservadas():
-                if elemento.getNumero() == mesa:
-                    Mesa = elemento
-            # Platillos
-            platillos = objetoAgregarPlatillo._entries[1].get()
-            platillosFacturaCantidad = platillos.split(",")
-            # Por cada id:cantidad
-            for dividido in platillosFacturaCantidad:
-                # dividido1 = Id del platillo
-                # dividido2 = cantidad del platillo
-                divididoNuevo = dividido.split(":")
-                dividido1 = int(divididoNuevo[0])
-                dividido2 = int(divididoNuevo[1])
-                # Hora de buscar por el menú del restaurante, para saber si lo introducido está
-                for elementos in Restaurante.getMenu():
-                    if elementos.getIdentificador() == dividido1:
-                        platillo = elementos
-                # Se aumenta la frecuencia del platillo
-                platillo.setFrecuencia(
-                    platillo.getFrecuencia() + dividido2)
-                # Se agregan a Platillos (Los platillos del pedido)
-                for i in range(0, dividido2):
-                    Platillos.append(platillo)
-            # Agregarlo al pedido
-            for elemento in Platillos:
-                Mesa.getCliente().getPedido().getPlatillos().append(elemento)
+            try:
+                mesa = int(objetoAgregarPlatillo._entries[0].get())
+                # Buscar la mesa entre las mesas reservadas
+                Mesa = None
+                for elemento in Restaurante.getMesasReservadas():
+                    if elemento.getNumero() == mesa:
+                        Mesa = elemento
+                verdad = 1
+                if Mesa == None:
+                    verdad = 0
+                if verdad == 0:
+                    raise(excepciones.Agrego("Dos"))
+                else:
+                    # Platillos
+                    platillos = objetoAgregarPlatillo._entries[1].get()
+                    platillosFacturaCantidad = platillos.split(",")
+                    # Por cada id:cantidad
+                    for dividido in platillosFacturaCantidad:
+                        # dividido1 = Id del platillo
+                        # dividido2 = cantidad del platillo
+                        if ":" in dividido:
+                            divididoNuevo = dividido.split(":")
+                            dividido1 = int(divididoNuevo[0])
+                            dividido2 = int(divididoNuevo[1])
+                            platillo = None
+                            # Hora de buscar por el menú del restaurante, para saber si lo introducido está
+                            for elementos in Restaurante.getMenu():
+                                if elementos.getIdentificador() == dividido1:
+                                    platillo = elementos
+                            if platillo != None:
+                                # Se aumenta la frecuencia del platillo
+                                platillo.setFrecuencia(
+                                    platillo.getFrecuencia() + dividido2)
+                                # Se agregan a Platillos (Los platillos del pedido)
+                                for i in range(0, dividido2):
+                                    Platillos.append(platillo)
+                                # Agregarlo al pedido
+                                for elemento in Platillos:
+                                    Mesa.getCliente().getPedido().getPlatillos().append(elemento)
+            except excepciones.Agrego as error:
+                self.crearAlertaExcepcion(error.imprimir())
+            except ValueError:
+                self.crearAlertaExcepcion("Tipo incorrecto en uno o más datos")
 
         def limpiarTexto():
             for entradas in objetoAgregarPlatillo._entries:
@@ -185,49 +209,69 @@ class Ventana(Toplevel):
             # Los platillos de la factura
             Platillos = []
             # Documento del mesero
-            documentoMesero = int(objetoPedido._entries[0].get())
+            documentoMesero = objetoPedido._entries[0].get()
             # Nombre del cliente
             nombreCliente = objetoPedido._entries[1].get()
             # Documento del cliente
-            documentoCliente = int(objetoPedido._entries[2].get())
+            documentoCliente = objetoPedido._entries[2].get()
             # mesa
-            mesa = int(objetoPedido._entries[3].get())
-            clienteNuevo = Cliente(nombreCliente, documentoCliente)
-            clienteNuevo.reservar(mesa)
+            mesa = objetoPedido._entries[3].get()
             # Platillos
             platillos = objetoPedido._entries[4].get()
             platillosFacturaCantidad = platillos.split(",")
-            # Por cada id:cantidad
-            for dividido in platillosFacturaCantidad:
-                # dividido1 = Id del platillo
-                # dividido2 = cantidad del platillo
-                divididoNuevo = dividido.split(":")
-                dividido1 = int(divididoNuevo[0])
-                dividido2 = int(divididoNuevo[1])
-                # Hora de buscar por el menú del restaurante, para saber si lo introducido está
-                for elementos in Restaurante.getMenu():
-                    if elementos.getIdentificador() == dividido1:
-                        platillo = elementos
-                # Se aumenta la frecuencia del platillo
-                platillo.setFrecuencia(
-                    platillo.getFrecuencia() + dividido2)
-                # Se agregan a Platillos (Los platillos del pedido)
-                for i in range(0, dividido2):
-                    Platillos.append(platillo)
-            # Si la hora es tarde
-            if Restaurante.getHora() == "Tarde":
-                for elementos in Restaurante.getMeserosHorarioTarde():
-                    if elementos.getDocumento() == documentoMesero:
-                        pedido = Pedido(clienteNuevo, elementos, 0)
-            # Si la hora es nocha
-            elif Restaurante.getHora() == "Noche":
-                for elementos in Restaurante.getMeserosHorarioNoche():
-                    if elementos.getDocumento() == documentoMesero:
-                        pedido = Pedido(clienteNuevo, elementos, 0)
+            try:
+                # Probar si alguno de los entries está vacío
+                verdad = 1
+                for elemento in objetoPedido._entries:
+                    if elemento.get() == "":
+                        verdad = 0
+                if verdad == 0:
+                    raise(excepciones.Creacion("Uno"))
+                else:
+                    documentoMesero = int(documentoMesero)
+                    documentoCliente = int(documentoCliente)
+                    mesa = int(mesa)
+                    clienteNuevo = Cliente(nombreCliente, documentoCliente)
+                    clienteNuevo.reservar(mesa)
 
-            # Poner los platillos al pedido, como también linkear el pedido con el cliente
-            pedido.setPlatillos(Platillos)
-            clienteNuevo.setPedido(pedido)
+                    # Por cada id:cantidad
+                    for dividido in platillosFacturaCantidad:
+                        # dividido1 = Id del platillo
+                        # dividido2 = cantidad del platillo
+                        if ":" in dividido:
+                            divididoNuevo = dividido.split(":")
+                            dividido1 = int(divididoNuevo[0])
+                            dividido2 = int(divididoNuevo[1])
+                            platillo = None
+                            # Hora de buscar por el menú del restaurante, para saber si lo introducido está
+                            for elementos in Restaurante.getMenu():
+                                if elementos.getIdentificador() == dividido1:
+                                    platillo = elementos
+                            if platillo != None:
+                                # Se aumenta la frecuencia del platillo
+                                platillo.setFrecuencia(
+                                    platillo.getFrecuencia() + dividido2)
+                                # Se agregan a Platillos (Los platillos del pedido)
+                                for i in range(0, dividido2):
+                                    Platillos.append(platillo)
+                        # Si la hora es tarde
+                        if Restaurante.getHora() == "Tarde":
+                            for elementos in Restaurante.getMeserosHorarioTarde():
+                                if elementos.getDocumento() == documentoMesero:
+                                    pedido = Pedido(clienteNuevo, elementos, 0)
+                        # Si la hora es nocha
+                        elif Restaurante.getHora() == "Noche":
+                            for elementos in Restaurante.getMeserosHorarioNoche():
+                                if elementos.getDocumento() == documentoMesero:
+                                    pedido = Pedido(clienteNuevo, elementos, 0)
+                        if clienteNuevo.mesa != None:
+                            # Poner los platillos al pedido, como también linkear el pedido con el cliente
+                            pedido.setPlatillos(Platillos)
+                            clienteNuevo.setPedido(pedido)
+            except excepciones.Creacion as crear:
+                self.crearAlertaExcepcion(crear.imprimir())
+            except ValueError:
+                self.crearAlertaExcepcion("Tipo incorrecto en uno o más datos")
 
         def limpiarTexto():
             for entradas in objetoPedido._entries:
@@ -252,30 +296,40 @@ class Ventana(Toplevel):
         # La función para crear la factura (parte lógica)
 
         def crearFactura():
-            mesa = int(objetoFactura._entries[0].get())
-            # Ya se creó el pedido, ahora toca es crear la factura
-            # Buscar la mesa en mesas reservadas
-            for elementos in Restaurante.getMesasReservadas():
-                if mesa == elementos.getNumero():
-                    # El objeto mesa, no el número
-                    mesaTotal = elementos
-                    mensajeEntregar = mesaTotal.getCliente().getPedido().facturar()
-                    mesaTotal.getCliente().irse()
-            self.cleanPane()
-            label = Label(master=self.pane0, text=mensajeEntregar, justify=CENTER,
-                          width=1280, height=800, font=("Times New Roman", "30"))
-            self.pane0.add(label)
-            self._hijos.append(label)
-
-            def cambioT(event=None):
-                x = label.winfo_width()
-                y = label.winfo_height()
-                if x < y:
-                    label.config(font=("Times New Roman", (x*30)//1280))
+            try:
+                mesa = int(objetoFactura._entries[0].get())
+                # Ya se creó el pedido, ahora toca es crear la factura
+                # Buscar la mesa en mesas reservadas
+                mensajeEntregar = None
+                for elementos in Restaurante.getMesasReservadas():
+                    if mesa == elementos.getNumero():
+                        # El objeto mesa, no el número
+                        mesaTotal = elementos
+                        mensajeEntregar = mesaTotal.getCliente().getPedido().facturar()
+                        mesaTotal.getCliente().irse()
+                if mensajeEntregar == None:
+                    raise(excepciones.Facturacion("Tres"))
                 else:
-                    label.config(font=("Times New Roman", (y*30)//800))
-            self.pane0.bind("<Configure>", cambioT)
-        # Limpiar los entries
+                    self.cleanPane()
+                    label = Label(master=self.pane0, text=mensajeEntregar, justify=CENTER,
+                                  width=1280, height=800, font=("Times New Roman", "30"))
+                    self.pane0.add(label)
+                    self._hijos.append(label)
+
+                    def cambioT(event=None):
+                        x = label.winfo_width()
+                        y = label.winfo_height()
+                        if x < y:
+                            label.config(
+                                font=("Times New Roman", (x*30)//1280))
+                        else:
+                            label.config(font=("Times New Roman", (y*30)//800))
+                    self.pane0.bind("<Configure>", cambioT)
+            except excepciones.Facturacion as error:
+                self.crearAlertaExcepcion(error.imprimir())
+            except ValueError:
+                self.crearAlertaExcepcion("Tipo incorrecto en uno o más datos")
+            # Limpiar los entries
 
         def limpiarTexto():
             for entradas in objetoFactura._entries:
@@ -302,43 +356,66 @@ class Ventana(Toplevel):
         def editarMesero():
             from gestorAplicacion.personas.mesero import Mesero
             # Todo documento es un número
-
-            nombre = objetoMesero._entries[1].get()
-            jornada = objetoMesero._entries[2].get()
             accion = objetoMesero._entries[3].get()
             # Si quiere crear un mesero
             if accion == "Crear":
-                identificacion = int(objetoMesero._entries[0].get())
-                funcional = 1
-                # Verifica si está en los meseros horarionoche o horariotarde
-                for elemento in Restaurante.getMeserosHorarioNoche():
-                    if elemento.getDocumento() == identificacion:
-                        funcional = 0
-                for elemento in Restaurante.getMeserosHorarioTarde():
-                    if elemento.getDocumento() == identificacion:
-                        funcional = 0
-                # En caso de que no esté antes pues se agrega según la jornada
-                if funcional == 1:
-                    mesero = Mesero(nombre, identificacion)
-                    if jornada == "Tarde":
-                        Restaurante.getMeserosHorarioTarde().append(mesero)
-                    elif jornada == "Noche":
-                        Restaurante.getMeserosHorarioNoche().append(mesero)
+                try:
+                    nombre = objetoMesero._entries[1].get()
+                    jornada = objetoMesero._entries[2].get()
+                    identificacion = objetoMesero._entries[0].get()
+                    verdad = 1
+                    for i in range(0, 3):
+                        if objetoMesero._entries[i].get() == "":
+                            verdad = 0
+                    if verdad == 0:
+                        raise(excepciones.Creacion("Tres"))
+
+                    identificacion = int(identificacion)
+
+                    funcional = 1
+                    # Verifica si está en los meseros horarionoche o horariotarde
+                    for elemento in Restaurante.getMeserosHorarioNoche():
+                        if elemento.getDocumento() == identificacion:
+                            funcional = 0
+                    for elemento in Restaurante.getMeserosHorarioTarde():
+                        if elemento.getDocumento() == identificacion:
+                            funcional = 0
+                    # En caso de que no esté antes pues se agrega según la jornada
+                    if funcional == 1:
+                        mesero = Mesero(nombre, identificacion)
+                        if jornada == "Tarde":
+                            Restaurante.getMeserosHorarioTarde().append(mesero)
+                        elif jornada == "Noche":
+                            Restaurante.getMeserosHorarioNoche().append(mesero)
+                except excepciones.Creacion as error:
+                    self.crearAlertaExcepcion(error.imprimir())
+                except ValueError:
+                    self.crearAlertaExcepcion(
+                        "Tipo incorrecto en uno o más datos")
             # Eliminar mesero
             elif accion == "Eliminar":
-                identificacion = int(objetoMesero._entries[0].get())
-                posicion = -1
-                for i in range(0, len(Restaurante.getMeserosHorarioTarde())):
-                    if identificacion == Restaurante.getMeserosHorarioTarde()[i].getDocumento():
-                        posicion = i
-                if posicion > -1:
-                    Restaurante.getMeserosHorarioTarde().pop(posicion)
-                else:
-                    for i in range(0, len(Restaurante.getMeserosHorarioNoche())):
-                        if identificacion == Restaurante.getMeserosHorarioNoche()[i].getDocumento():
+                try:
+                    identificacion = int(objetoMesero._entries[0].get())
+                    posicion = -1
+                    for i in range(0, len(Restaurante.getMeserosHorarioTarde())):
+                        if identificacion == Restaurante.getMeserosHorarioTarde()[i].getDocumento():
                             posicion = i
                     if posicion > -1:
-                        Restaurante.getMeserosHorarioNoche().pop(posicion)
+                        Restaurante.getMeserosHorarioTarde().pop(posicion)
+                    else:
+                        for i in range(0, len(Restaurante.getMeserosHorarioNoche())):
+                            if identificacion == Restaurante.getMeserosHorarioNoche()[i].getDocumento():
+                                posicion = i
+                        if posicion > -1:
+                            Restaurante.getMeserosHorarioNoche().pop(posicion)
+                    if posicion == -1:
+                        raise(excepciones.Eliminacion("Cuatro"))
+                except excepciones.Eliminacion as error:
+                    self.crearAlertaExcepcion(error.imprimir())
+                except ValueError:
+                    self.crearAlertaExcepcion(
+                        "Tipo incorrecto en uno o más datos")
+
             # Ver meseros
             elif accion == "Ver":
                 Mensaje = "Meseros presentes por la tarde:"
@@ -389,26 +466,48 @@ class Ventana(Toplevel):
             accion = objetoMesa._entries[2].get()
             # Crear las mesas
             if accion == "Crear":
-                numeroMesa = int(objetoMesa._entries[0].get())
-                numeroSillas = int(objetoMesa._entries[1].get())
-                funcional = 1
-                for elemento in Restaurante.getMesasDisponibles():
-                    if elemento.getNumero() == numeroMesa:
-                        funcional = 0
-                for elemento in Restaurante.getMesasReservadas():
-                    if elemento.getNumero() == numeroMesa:
-                        funcional = 0
-                if funcional == 1:
-                    mesa = Mesa(True, numeroMesa, numeroSillas)
+                try:
+                    numeroMesa = objetoMesa._entries[0].get()
+                    numeroSillas = objetoMesa._entries[1].get()
+                    verdad = 1
+                    for i in range(0, 2):
+                        if objetoMesa._entries[i].get() == "":
+                            verdad = 0
+                    if verdad == 0:
+                        raise(excepciones.Creacion("Cuatro"))
+                    funcional = 1
+                    numeroMesa = int(numeroMesa)
+                    numeroSillas = int(numeroSillas)
+                    for elemento in Restaurante.getMesasDisponibles():
+                        if elemento.getNumero() == numeroMesa:
+                            funcional = 0
+                    for elemento in Restaurante.getMesasReservadas():
+                        if elemento.getNumero() == numeroMesa:
+                            funcional = 0
+                    if funcional == 1:
+                        mesa = Mesa(True, numeroMesa, numeroSillas)
+                except excepciones.Creacion as error:
+                    self.crearAlertaExcepcion(error.imprimir())
+                except ValueError:
+                    self.crearAlertaExcepcion(
+                        "Tipo incorrecto en uno o más datos")
             # Eliminar las mesas
             if accion == "Eliminar":
-                numeroMesa = int(objetoMesa._entries[0].get())
-                posicion = -1
-                for i in range(0, len(Restaurante.getMesasDisponibles())):
-                    if numeroMesa == Restaurante.getMesasDisponibles()[i].getNumero():
-                        posicion = i
-                if posicion > -1:
-                    Restaurante.getMesasDisponibles().pop(posicion)
+                try:
+                    numeroMesa = int(objetoMesa._entries[0].get())
+                    posicion = -1
+                    for i in range(0, len(Restaurante.getMesasDisponibles())):
+                        if numeroMesa == Restaurante.getMesasDisponibles()[i].getNumero():
+                            posicion = i
+                    if posicion > -1:
+                        Restaurante.getMesasDisponibles().pop(posicion)
+                    if posicion == -1:
+                        raise(excepciones.Eliminacion("Cinco"))
+                except excepciones.Eliminacion as error:
+                    self.crearAlertaExcepcion(error.imprimir())
+                except ValueError:
+                    self.crearAlertaExcepcion(
+                        "Tipo incorrecto en uno o más datos")
             # Ver las mesas
             if accion == "Ver":
                 mesasDisponibles = "Las mesas disponibles ahora mismo son:"
@@ -454,14 +553,23 @@ class Ventana(Toplevel):
             Platillos = objetoMenu._entries[2].get()
             # Crear Menú
             if accion == "Crear":
-                platillosMenu = Platillos.split(",")
-                for platillitos in platillosMenu:
-                    for i in range(0, len(Restaurante.getPlatillos())):
-                        # Se añade al menú con el nombre
-                        if int(platillitos) == Restaurante.getPlatillos()[i].getIdentificador():
-                            if Restaurante.getPlatillos()[i] not in Restaurante.getMenu():
-                                Restaurante.getMenu().append(
-                                    Restaurante.getPlatillos()[i])
+                try:
+                    platillosMenu = Platillos.split(",")
+                    Suma = 0
+                    for platillitos in platillosMenu:
+                        for i in range(0, len(Restaurante.getPlatillos())):
+                            # Se añade al menú con el nombre
+                            if int(platillitos) == Restaurante.getPlatillos()[i].getIdentificador():
+                                if Restaurante.getPlatillos()[i] not in Restaurante.getMenu():
+                                    Restaurante.getMenu().append(
+                                        Restaurante.getPlatillos()[i])
+                                    Suma += 1
+                    if Suma < len(platillosMenu):
+                        raise(excepciones.Creacion("Siete"))
+                except excepciones.Creacion as error:
+                    self.crearAlertaExcepcion(
+                        error.imprimir() + "\nSe agregaron algunos platillos, otros no existen")
+
             # Ver Menú
             if accion == "Ver":
                 mensaje = "Los platillos del menu son:"
@@ -511,46 +619,65 @@ class Ventana(Toplevel):
             nombre = objetoPlatillos._entries[2].get()
             # Crear los platillos
             if accion == "Crear":
-                ingredientes = objetoPlatillos._entries[3].get()
-                tipo = objetoPlatillos._entries[4].get()
-                tiempoPreparacion = int(objetoPlatillos._entries[5].get())
-                precio = int(objetoPlatillos._entries[6].get())
-                funcional = 1
-                # Genera el código aleatorio
-                codigoReal = random.randint(100, 200)
-                # Buscar si este código estaba antes
-                for elementos in Restaurante.getPlatillos():
-                    if elementos.getIdentificador() == codigoReal:
-                        funcional = 0
-                # Buscar si este nombre estaba antes
-                for elementos in Restaurante.getPlatillos():
-                    if elementos.getNombre() == nombre:
-                        funcional = 0
-                # En caso de que no haya estado entonces se crea el platillo y se mete el código al entry que no se puede modificar (el del código auto generado)
-                if funcional == 1:
-                    platillos = Platillo(
-                        tiempoPreparacion, nombre, tipo, ingredientes, precio, codigoReal, 0)
-                    Restaurante.getPlatillos().append(platillos)
-                    codigo.configure(state=NORMAL)
-                    codigo.delete(0, END)
-                    codigo.insert(0, str(codigoReal))
-                    codigo.configure(state=DISABLED)
-
+                try:
+                    ingredientes = objetoPlatillos._entries[3].get()
+                    tipo = objetoPlatillos._entries[4].get()
+                    tiempoPreparacion = objetoPlatillos._entries[5].get()
+                    precio = objetoPlatillos._entries[6].get()
+                    verdad = 1
+                    for i in range(0, 7):
+                        if objetoPlatillos._entries[i].get() == "" and i != 1:
+                            verdad = 0
+                    if verdad == 0:
+                        raise(excepciones.Creacion("SSSS"))
+                    funcional = 1
+                    # Genera el código aleatorio
+                    tiempoPreparacion = int(tiempoPreparacion)
+                    precio = int(precio)
+                    codigoReal = random.randint(100, 200)
+                    # Buscar si este código estaba antes
+                    for elementos in Restaurante.getPlatillos():
+                        if elementos.getIdentificador() == codigoReal:
+                            funcional = 0
+                    # Buscar si este nombre estaba antes
+                    for elementos in Restaurante.getPlatillos():
+                        if elementos.getNombre() == nombre:
+                            funcional = 0
+                    # En caso de que no haya estado entonces se crea el platillo y se mete el código al entry que no se puede modificar (el del código auto generado)
+                    if funcional == 1:
+                        platillos = Platillo(
+                            tiempoPreparacion, nombre, tipo, ingredientes, precio, codigoReal, 0)
+                        Restaurante.getPlatillos().append(platillos)
+                        codigo.configure(state=NORMAL)
+                        codigo.delete(0, END)
+                        codigo.insert(0, str(codigoReal))
+                        codigo.configure(state=DISABLED)
+                except excepciones.Creacion as error:
+                    self.crearAlertaExcepcion(error.imprimir())
+                except ValueError:
+                    self.crearAlertaExcepcion(
+                        "Tipo incorrecto en uno o más datos")
             # Eliminar el platillo
             elif accion == "Eliminar":
-                posicionPlatillo = -1
-                # Lo busca en platillos y menú para borrarlo
-                for i in range(0, len(Restaurante.getPlatillos())):
-                    if Restaurante.getPlatillos()[i].getNombre() == nombre:
-                        posicionPlatillo = i
-                if posicionPlatillo > -1:
-                    Restaurante.getPlatillos().pop(posicionPlatillo)
-                posicionMenu = -1
-                for i in range(0, len(Restaurante.getMenu())):
-                    if Restaurante.getMenu()[i].getNombre() == nombre:
-                        posicionMenu = i
-                if posicionMenu > -1:
-                    Restaurante.getMenu().pop(posicionMenu)
+                try:
+                    posicionPlatillo = -1
+                    # Lo busca en platillos y menú para borrarlo
+                    for i in range(0, len(Restaurante.getPlatillos())):
+                        if Restaurante.getPlatillos()[i].getNombre() == nombre:
+                            posicionPlatillo = i
+                    if posicionPlatillo > -1:
+                        Restaurante.getPlatillos().pop(posicionPlatillo)
+                    posicionMenu = -1
+                    for i in range(0, len(Restaurante.getMenu())):
+                        if Restaurante.getMenu()[i].getNombre() == nombre:
+                            posicionMenu = i
+                    if posicionMenu > -1:
+                        Restaurante.getMenu().pop(posicionMenu)
+                    if posicionPlatillo == -1:
+                        raise(excepciones.Eliminacion("Cualquier"))
+                except excepciones.Eliminacion as error:
+                    self.crearAlertaExcepcion(error.imprimir())
+
             # Ver platillos
             elif accion == "Ver":
                 mensaje = "Los platillos son:"
@@ -594,18 +721,23 @@ class Ventana(Toplevel):
         # Cambiar la jornada
 
         def editarJornada():
-            jornadaActual = objetoJornada._entries[0]
-            cambiarJornada = objetoJornada._entries[1].get()
-            # Si es tarde pa tarde, si es noche pa noche
-            if cambiarJornada == "Tarde":
-                Restaurante.setHora("Tarde")
-            elif cambiarJornada == "Noche":
-                Restaurante.setHora("Noche")
-            # Imprime el Estado en el entry que no se puede modificar
-            jornadaActual.configure(state=NORMAL)
-            jornadaActual.delete(0, END)
-            jornadaActual.insert(0, Restaurante.getHora())
-            jornadaActual.configure(state=DISABLED)
+            try:
+                jornadaActual = objetoJornada._entries[0]
+                cambiarJornada = objetoJornada._entries[1].get()
+                # Si es tarde pa tarde, si es noche pa noche
+                if cambiarJornada == "Tarde":
+                    Restaurante.setHora("Tarde")
+                elif cambiarJornada == "Noche":
+                    Restaurante.setHora("Noche")
+                else:
+                    raise(excepciones.JornadaInexistente("AAA"))
+                # Imprime el Estado en el entry que no se puede modificar
+                jornadaActual.configure(state=NORMAL)
+                jornadaActual.delete(0, END)
+                jornadaActual.insert(0, Restaurante.getHora())
+                jornadaActual.configure(state=DISABLED)
+            except excepciones.JornadaInexistente as error:
+                self.crearAlertaExcepcion(error.imprimir())
 
         def limpiarTexto():
             for entradas in objetoJornada._entries:
@@ -649,23 +781,29 @@ class Ventana(Toplevel):
             if accion == "Reiniciar":
                 Caja.reiniciarCaja()
             elif accion == "Ver":
-                self.cleanPane()
                 Caja.cuadrarCaja()
-                string = "Las ganancias de hoy fueron: $" + \
-                    str(Caja.getIngresos()) + "\n"
-                label = Label(master=self.pane0, text=string, justify=CENTER,
-                              width=1280, height=800, font=("Times New Roman", "30"))
-                self.pane0.add(label)
-                self._hijos.append(label)
+                self.cleanPane()
+                try:
+                    if Caja.ingresos == 0:
+                        raise(excepciones.CajaCero("AAA"))
+                    string = "Las ganancias de hoy fueron: $" + \
+                        str(Caja.getIngresos()) + "\n"
+                    label = Label(master=self.pane0, text=string, justify=CENTER,
+                                  width=1280, height=800, font=("Times New Roman", "30"))
+                    self.pane0.add(label)
+                    self._hijos.append(label)
 
-                def cambioT(event=None):
-                    x = label.winfo_width()
-                    y = label.winfo_height()
-                    if x < y:
-                        label.config(font=("Times New Roman", (x*30)//1280))
-                    else:
-                        label.config(font=("Times New Roman", (y*30)//800))
-                self.pane0.bind("<Configure>", cambioT)
+                    def cambioT(event=None):
+                        x = label.winfo_width()
+                        y = label.winfo_height()
+                        if x < y:
+                            label.config(
+                                font=("Times New Roman", (x*30)//1280))
+                        else:
+                            label.config(font=("Times New Roman", (y*30)//800))
+                    self.pane0.bind("<Configure>", cambioT)
+                except excepciones.CajaCero as error:
+                    self.crearAlertaExcepcion(error.imprimir())
 
         def limpiarTexto():
             for entradas in objetoCaja._entries:

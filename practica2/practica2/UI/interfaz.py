@@ -1,3 +1,6 @@
+# Archivo interfaz inicial
+# Autor: Santiago Salazar Ramirez
+# Muestra la interfaz inicial y su conexión con la ventana de usuario
 import tkinter as tk
 from turtle import pos
 from PIL import ImageTk, Image
@@ -7,32 +10,40 @@ import pickle
 from gestorAplicacion.utileria.restaurante import Restaurante
 from gestorAplicacion.utileria.caja import Caja
 
-# Deserializar
-# Menú:
-abrirMenu = open('menu', 'rb')
-Restaurante.setMenu(pickle.load(abrirMenu))
-abrirMenu.close()
 
-# Mesas
-abrirMesa = open('mesas', 'rb')
-Restaurante.setMesasDisponibles(pickle.load(abrirMesa))
-abrirMesa.close()
-# Meseros tarde
-abrirMeserosTarde = open('meserosTarde', 'rb')
-Restaurante.setMeserosHorarioTarde(pickle.load(abrirMeserosTarde))
-abrirMeserosTarde.close()
-# Meseros Noche
-abrirMeserosNoche = open('meserosNoche', 'rb')
-Restaurante.setMeserosHorarioNoche(pickle.load(abrirMeserosNoche))
-abrirMeserosNoche.close()
-# Pedidos
-abrirPedidos = open('pedidos', 'rb')
-Caja.setPedidos(pickle.load(abrirPedidos))
-abrirPedidos.close()
-# Platillos
-abrirPlatillos = open('platillos', 'rb')
-Restaurante.setPlatillos(pickle.load(abrirPlatillos))
-abrirPlatillos.close()
+# Revisar si los archivos existen:
+Verdad = 1
+Lista = ['menu', 'mesas', 'meserosNoche',
+         'meserosTarde', 'pedidos', 'platillos']
+for elementos in Lista:
+    if os.path.isfile(elementos) == False:
+        Verdad = 0
+if Verdad == 1:
+    # Deserializar
+    # Menú:
+    abrirMenu = open('menu', 'rb')
+    Restaurante.setMenu(pickle.load(abrirMenu))
+    abrirMenu.close()
+    # Mesas
+    abrirMesa = open('mesas', 'rb')
+    Restaurante.setMesasDisponibles(pickle.load(abrirMesa))
+    abrirMesa.close()
+    # Meseros tarde
+    abrirMeserosTarde = open('meserosTarde', 'rb')
+    Restaurante.setMeserosHorarioTarde(pickle.load(abrirMeserosTarde))
+    abrirMeserosTarde.close()
+    # Meseros Noche
+    abrirMeserosNoche = open('meserosNoche', 'rb')
+    Restaurante.setMeserosHorarioNoche(pickle.load(abrirMeserosNoche))
+    abrirMeserosNoche.close()
+    # Pedidos
+    abrirPedidos = open('pedidos', 'rb')
+    Caja.setPedidos(pickle.load(abrirPedidos))
+    abrirPedidos.close()
+    # Platillos
+    abrirPlatillos = open('platillos', 'rb')
+    Restaurante.setPlatillos(pickle.load(abrirPlatillos))
+    abrirPlatillos.close()
 os.getcwd()
 window = tk.Tk()
 # Dimensiones de mi computador
@@ -252,4 +263,5 @@ menubar.add_cascade(
     label="Inicio",
     menu=file_menu
 )
+print(Caja.ingresos)
 window.mainloop()

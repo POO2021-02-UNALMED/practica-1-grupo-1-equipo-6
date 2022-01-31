@@ -1,4 +1,5 @@
 # Clase Mesa
+# Autor: Michael Moreno Valoyes
 # Importante en la funcionalidad de administrar y verificar el estado del restaurante
 class Mesa:
     # La crea y considera si la mesa está disponible o no
