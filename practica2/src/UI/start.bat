@@ -1,3 +1,3 @@
 @echo off
-interfaz.py
+py interfaz.py
 pause
